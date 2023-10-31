@@ -13,6 +13,10 @@ This repo has submodules. Please clone with the following command.
 git clone --recurse-submodules https://github.com/jrkwon/agribot
 ```
 
+## Additional SDKs
+
+To run `agribot`, you must install SDKs for sensors and additional packages, including `YDLIDAR SDK` and `Cartographer`. The details can be found https://github.com/jrkwon/agribot_ros.
+
 ## Acknowledgments
 
 ### System Design and Implementation
