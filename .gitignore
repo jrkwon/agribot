@@ -1,6 +1,8 @@
 ###############
 # rtabmap database
 *.db
+*.jpg
+*.mp4
 
 ###############
 # rtabmap 3D model ply
