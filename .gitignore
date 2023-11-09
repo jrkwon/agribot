@@ -3,6 +3,9 @@
 *.db
 *.jpg
 *.mp4
+*.h5
+*.json
+*.png
 
 ###############
 # rtabmap 3D model ply
