@@ -1,15 +1,3 @@
-[submodule "YDLidar-SDK"]
-	path = YDLidar-SDK
-	url = https://github.com/YDLIDAR/YDLidar-SDK
-[submodule "catkin_ws/ydlidar_ros_driver"]
-	path = catkin_ws/ydlidar_ros_driver
-	url = https://github.com/YDLIDAR/ydlidar_ros_driver
-[submodule "catkin_ws/ugv_sdk"]
-	path = catkin_ws/ugv_sdk
-	url = https://github.com/agilexrobotics/ugv_sdk
-[submodule "catkin_ws/agribot_ros"]
-	path = catkin_ws/agribot_ros
-	url = https://github.com/jrkwon/agribot_ros
 [submodule "catkin_ws/src/agribot_ros"]
 	path = catkin_ws/src/agribot_ros
 	url = https://github.com/jrkwon/agribot_ros
