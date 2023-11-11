@@ -19,6 +19,8 @@ import tensorflow as tf
 
 import const
 from config import Config
+import utilities
+
 
 config = Config.neural_net
 config_rn = Config.run_neural
@@ -188,7 +190,7 @@ class NetModel:
             learning_rate = config['cnn_lr']
 
         self.model.compile(loss=losses.mean_squared_error,
-                    optimizer=optimizers.Adam(lr=learning_rate), 
+                    optimizer=optimizers.Adam(learning_rate=learning_rate), 
                     metrics=['accuracy'])
         # if config['steering_angle_tolerance'] == 0.0:
         #     self.model.compile(loss=losses.mean_squared_error,
@@ -205,22 +207,28 @@ class NetModel:
     # save model
     def save(self, model_name):
 
+        self.model.save(model_name + '.keras')
+        """
         json_string = self.model.to_json()
         #weight_filename = self.model_path + '_' + Config.config_yaml_name \
         #    + '_N' + str(config['network_type'])
         open(model_name+'.json', 'w').write(json_string)
         self.model.save_weights(model_name+'.h5', overwrite=True)
+        """
 
 
     ###########################################################################
     # model_path = '../data/2007-09-22-12-12-12.
     def load(self):
 
+        self.model.load_model(self.model_path)
+        """
         from keras.models import model_from_json
         print('self.model_path',self.model_path)
         self.model = model_from_json(open(self.model_path+'.json').read())
         self.model.load_weights(self.model_path+'.h5')
         self._compile()
+        """
 
     ###########################################################################
     #

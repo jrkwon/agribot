@@ -18,6 +18,8 @@ from net_model import NetModel
 from drive_data import DriveData
 from config import Config
 from image_process import ImageProcess
+import utilities
+
 
 config = Config.neural_net
 
@@ -40,7 +42,7 @@ class DriveTest:
             model_name = data_path
         csv_path = data_path + '/' + model_name + const.DATA_EXT   
         
-        self.data = DriveData(csv_path)
+        self.data = DriveData(csv_path, utilities.get_current_timestamp())
         
         self.test_generator = None
         

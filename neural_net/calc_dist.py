@@ -12,11 +12,12 @@ History:
 import sys
 import os
 from progressbar import ProgressBar
+import math
+import matplotlib.pyplot as plt
 
 import const
 from drive_data import DriveData
-import math
-import matplotlib.pyplot as plt
+import utilities
 
 
 ###############################################################################
@@ -35,7 +36,7 @@ def calc_dist(data_path):
         folder_name = data_path[:-1]
         csv_file = folder_name + const.DATA_EXT
 
-    data = DriveData(data_path + csv_file)
+    data = DriveData(data_path + csv_file, utilities.get_current_timestamp())
     data.read(normalize = False)
 
     bar = ProgressBar()

@@ -12,18 +12,19 @@ import cv2
 import numpy as np
 from progressbar import ProgressBar
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 import const
 from drive_data import DriveData
 from config import Config
 from image_process import ImageProcess
-import os
+import utilities
 
 
 class ImageSettings:
     def __init__(self, image_name, index_x):
         # local settings
-        abs_path = os.environ['OSCAR_PATH'] + '/neural_net/'
+        abs_path = os.environ['AGRIBOT_PATH'] + '/neural_net/'
         
         full_image_name = abs_path + image_name
 
@@ -98,7 +99,7 @@ class DriveView:
         if os.path.isdir(self.target_path) is False:
             os.mkdir(self.target_path)
 
-        self.drive_data = DriveData(csv_path)
+        self.drive_data = DriveData(csv_path, utilities.get_current_timestamp())
         self.drive_data.read(normalize=False)
         self.data_len = len(self.drive_data.image_names)
 

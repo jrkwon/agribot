@@ -8,6 +8,7 @@ History:
 @author: jaerock
 """
 
+import os
 from datetime import datetime
 import matplotlib.pyplot as plt
 import cv2
@@ -22,6 +23,8 @@ from drive_data import DriveData
 from config import Config
 from image_process import ImageProcess
 from data_augmentation import DataAugmentation
+import utilities
+
 
 config = Config.neural_net
 
@@ -32,6 +35,8 @@ class DriveTrain:
     ###########################################################################
     # data_path = 'path_to_drive_data'  e.g. ../data/2017-09-22-10-12-34-56/'
     def __init__(self, data_path):
+
+        self.timestamp = utilities.get_current_timestamp()
         
         if data_path[-1] == '/':
             data_path = data_path[:-1]
@@ -56,11 +61,16 @@ class DriveTrain:
         #self.model_name = model_name
 
         self.model_name = data_path + '_' + Config.neural_net_yaml_name \
-            + '_N' + str(config['network_type'])
-        self.model_ckpt_name = self.model_name + '_ckpt'
+            + '_n' + str(config['network_type'])
 
+        # put ckpt files to ckpt/ 
+        ckpt_dir = data_path + '_' + const.CKPT_DIR
+        #if not os.path.exists(ckpt_dir):
+        #    os.makedirs(ckpt_dir)
+
+        self.model_ckpt_name = os.path.join(ckpt_dir, model_name)
         
-        self.data = DriveData(self.csv_path)
+        self.data = DriveData(self.csv_path, self.timestamp)
         self.net_model = NetModel(data_path)
         self.image_process = ImageProcess()
         self.data_aug = DataAugmentation()
@@ -328,7 +338,9 @@ class DriveTrain:
         callbacks = []
         #weight_filename = self.data_path + '_' + Config.config_yaml_name \
         #    + '_N' + str(config['network_type']) + '_ckpt'
-        checkpoint = ModelCheckpoint(self.model_ckpt_name +'.{epoch:02d}-{val_loss:.2f}.h5',
+        checkpoint = ModelCheckpoint(self.model_ckpt_name + '_' + \
+                                     self.timestamp + \
+                                     '.{epoch:02d}-{val_loss:.2f}',
                                      monitor='val_loss', 
                                      verbose=1, save_best_only=True, mode='min')
         callbacks.append(checkpoint)
@@ -345,7 +357,7 @@ class DriveTrain:
         callbacks.append(tensorboard)
 
 
-        self.train_hist = self.net_model.model.fit_generator(
+        self.train_hist = self.net_model.model.fit(
                 self.train_generator, 
                 steps_per_epoch=self.num_train_samples//config['batch_size'], 
                 epochs=config['num_epochs'], 
@@ -371,8 +383,8 @@ class DriveTrain:
         plt.legend(['training set', 'validatation set'], loc='upper right')
         plt.tight_layout()
         #plt.show()
-        plt.savefig(self.model_name + '_model.png', dpi=150)
-        plt.savefig(self.model_name + '_model.pdf', dpi=150)
+        plt.savefig(self.model_name + '_' + self.timestamp + '_model.png', dpi=150)
+        plt.savefig(self.model_name + '_' + self.timestamp + '_model.pdf', dpi=150)
         
         
     ###########################################################################
@@ -382,6 +394,6 @@ class DriveTrain:
         self._prepare_data()
         self._build_model(show_summary)
         self._start_training()
-        self.net_model.save(self.model_name)
+        self.net_model.save(self.model_name + '_' + self.timestamp)
         self._plot_training_history()
         Config.summary()

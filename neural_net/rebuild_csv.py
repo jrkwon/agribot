@@ -12,11 +12,14 @@ History:
 import sys
 import os
 from progressbar import ProgressBar
+import pandas as pd
 
 import const
 from drive_data import DriveData
 from config import Config
-import pandas as pd
+import utilities
+
+
 ###############################################################################
 #
 def build_csv(data_path):
@@ -43,7 +46,7 @@ def build_csv(data_path):
     os.rename(data_path + csv_file, csv_backup_name)
     print('rename ' + data_path + csv_file + ' to ' + csv_backup_name)
     '''
-    #data = DriveData(csv_backup_name)
+    #data = DriveData(csv_backup_name, utilities.get_current_timestamp())
     #data.read(normalize = False)
     data = pd.read_csv(csv_file, index_col=False)
     Steering_ang = list(map(float,data.loc[1:,'steering_angle'].to_list()))

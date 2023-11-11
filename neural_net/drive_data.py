@@ -30,7 +30,8 @@ class DriveData:
                     'vel', 'vel_x', 'vel_y', 'vel_z',
                     'pos_x', 'pos_y', 'pos_z' ]
 
-    def __init__(self, csv_fname):
+    def __init__(self, csv_fname, timestamp):
+        self.timestamp = timestamp
         self.csv_fname = csv_fname
         self.df = None
         self.image_names = []
@@ -97,7 +98,7 @@ class DriveData:
         # normalize data
         # 'normalize' arg is for overriding 'normalize_data' config.
         if (Config.neural_net['normalize_data'] and normalize):
-            print('\nnormalizing... wait for a moment')
+            print('\nNormalizing... wait for a moment...')
             num_bins = 50
             fig, (ax1, ax2) = plt.subplots(1, 2)
             #fig.suptitle('Data Normalization')
@@ -112,7 +113,7 @@ class DriveData:
             hist, bins = np.histogram(self.Steering_ang, bins=num_bins)
             center = (bins[:-1] + bins[1:])*0.5
             ax1.bar(center, hist, width=0.05)
-            ax1.set(title = 'original')
+            ax1.set(title = 'Original')
 
             remove_list = []
             samples_per_bin = 200
@@ -129,28 +130,28 @@ class DriveData:
                 remove_list.extend(list_)
             
             print('\r####### data normalization #########')
-            print('removed:', len(remove_list))
+            print('removed:\t', len(remove_list))
             self.df.drop(self.df.index[remove_list], inplace = True)
             self.df.reset_index(inplace = True)
             self.df.drop(['index'], axis = 1, inplace = True)
-            print('remaining:', len(self.df))
+            print('remaining:\t', len(self.df))
             
             hist, _ = np.histogram(self.Steering_ang, (num_bins))
             ax2.bar(center, hist, width=0.05)
             ax2.plot((np.min(self.Steering_ang), np.max(self.Steering_ang)), 
                         (samples_per_bin, samples_per_bin))  
-            ax2.set(title = 'normalized')          
+            ax2.set(title = 'Normalized')          
 
             plt.tight_layout()
-            plt.savefig(self.get_data_path() + '_normalized.png', dpi=150)
-            plt.savefig(self.get_data_path() + '_normalized.pdf', dpi=150)
+            plt.savefig(self.get_data_path() + '_' + self.timestamp + '_normalized.png', dpi=150)
+            plt.savefig(self.get_data_path() + '_' + self.timestamp + '_normalized.pdf', dpi=150)
             #plt.show()
 
         ############################################ 
         # read out
         if (read): 
             num_data = len(self.df)
-            print("num_data",num_data-1)
+            print("\nnum_data:\t",num_data-1)
             bar = ProgressBar()
             
             for i in bar(range(1,num_data-1)): # we don't have a title
@@ -189,6 +190,7 @@ class DriveData:
 #  for testing DriveData class only
 def main(data_path):
     import const
+    import utilities
 
     if data_path[-1] == '/':
         data_path = data_path[:-1]
@@ -201,7 +203,7 @@ def main(data_path):
         model_name = data_path
     csv_path = data_path + '/' + model_name + const.DATA_EXT   
     
-    data = DriveData(csv_path)
+    data = DriveData(csv_path, utilities.get_current_timestamp())
     data.read(read = False)
 
 

@@ -20,3 +20,6 @@ NET_TYPE_CONVLSTM    = 10
 DATA_EXT             = '.csv'
 IMAGE_EXT            = '.jpg'
 LOG_EXT              = '_log.csv'
+
+# dir names for ckpt
+CKPT_DIR             = 'ckpt'

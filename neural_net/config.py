@@ -17,10 +17,9 @@ import sys
 
 class Config:
     try:
-        #config_name = os.environ['OSCAR_PATH'] + '/config/' + 'config.yaml'
-        config_name = '/home/bimi/users/Elahe/agribot' + '/config/' + 'config.yaml'
+        config_name = os.environ['AGRIBOT_PATH'] + '/config/' + 'config.yaml'
     except:
-        exit('ERROR: OSCAR_PATH not defined. Please source setup.bash.') 
+        exit('ERROR: AGRIBOT_PATH not defined. Please source setup.bash.') 
 
     with open(config_name) as file:
         config_yaml = yaml.load(file, Loader=yaml.FullLoader)
@@ -36,20 +35,17 @@ class Config:
         print('\n')
 
     # neural_net
-    #neural_net_yaml = os.environ['OSCAR_PATH'] + '/config/neural_net/' + neural_net_yaml_name + '.yaml'
-    neural_net_yaml = '/home/bimi/users/Elahe/agribot'+ '/config/neural_net/' + neural_net_yaml_name + '.yaml'
+    neural_net_yaml = os.environ['AGRIBOT_PATH'] + '/config/neural_net/' + neural_net_yaml_name + '.yaml'
     with open(neural_net_yaml) as file:
         neural_net = yaml.load(file, Loader=yaml.FullLoader)
 
     # data_collection
-    #data_collection_yaml = os.environ['OSCAR_PATH'] + '/config/data_collection/' + data_collection_yaml_name + '.yaml'
-    data_collection_yaml = '/home/bimi/users/Elahe/agribot' + '/config/data_collection/' + data_collection_yaml_name + '.yaml'
+    data_collection_yaml = os.environ['AGRIBOT_PATH'] + '/config/data_collection/' + data_collection_yaml_name + '.yaml'
     with open(data_collection_yaml) as file:
         data_collection = yaml.load(file, Loader=yaml.FullLoader)
 
     # run_neural
-    #run_neural_yaml = os.environ['OSCAR_PATH'] + '/config/run_neural/' + run_neural_yaml_name + '.yaml'
-    run_neural_yaml = '/home/bimi/users/Elahe/agribot' + '/config/run_neural/' + run_neural_yaml_name + '.yaml'
+    run_neural_yaml = os.environ['AGRIBOT_PATH'] + '/config/run_neural/' + run_neural_yaml_name + '.yaml'
     with open(run_neural_yaml) as file:
         run_neural = yaml.load(file, Loader=yaml.FullLoader)
 
@@ -61,11 +57,11 @@ class Config:
         print('=======================================================')
         print('                 System Configuration ')
         print('=======================================================')
-        print('                  ::: Neural Net :::')
+        print(':::::::::::::::::::::: Neural Net :::::::::::::::::::::')
         print(yaml.dump(Config.neural_net))
-        print('                ::: Data Collection :::')
+        print('::::::::::::::::::: Data Collection :::::::::::::::::::')
         print(yaml.dump(Config.data_collection))
-        print('                  ::: Run Neural :::')
+        print(':::::::::::::::::::::: Run Neural :::::::::::::::::::::')
         print(yaml.dump(Config.run_neural))
 
 

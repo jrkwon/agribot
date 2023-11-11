@@ -22,6 +22,8 @@ from drive_data import DriveData
 from config import Config
 from image_process import ImageProcess
 from data_augmentation import DataAugmentation
+import utilities
+
 
 config = Config.neural_net
 
@@ -67,7 +69,7 @@ class DriveTrain:
             + '_N' + str(config['network_type'])
         self.model_ckpt_name = self.model_name + '_ckpt'
 
-        self.data = DriveData(self.csv_path)
+        self.data = DriveData(self.csv_path, utilities.get_current_timestamp())
         self.net_model = NetModel(data_path)
         self.image_process = ImageProcess()
         self.data_aug = DataAugmentation()

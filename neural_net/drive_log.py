@@ -21,6 +21,7 @@ from net_model import NetModel
 from drive_data import DriveData
 from config import Config
 from image_process import ImageProcess
+import utilities
 
 ###############################################################################
 #
@@ -44,7 +45,7 @@ class DriveLog:
         csv_path = data_path + '/' + model_name + const.DATA_EXT   
         
         self.data_path = data_path
-        self.data = DriveData(csv_path)
+        self.data = DriveData(csv_path, utilities.get_current_timestamp())
         
         self.test_generator = None
         

@@ -2,6 +2,9 @@
 
 ## History
 
+* 11/11/2023: Test in the latest TensorFlow
+* 11/11/2023: Change model format to Keras
+* 11/11/2023: Clean up
 * 10/31/2023: Start with submodules
 
 
@@ -12,6 +15,10 @@ This repo has submodules. Please clone with the following command.
 ```bash
 git clone --recurse-submodules https://github.com/jrkwon/agribot
 ```
+
+## TensorFlow Installation with CUDA, cuDNN in Anaconda Env
+* https://jrkwon.com/2023/11/11/install-tensorflow-with-cuda-cudnn-in-anaconda-environment/
+
 
 ## Additional SDKs
 
