@@ -1,4 +1,8 @@
 ###############
+# e2e dataset
+e2e-dataset/
+
+###############
 # rtabmap database
 *.db
 *.jpg

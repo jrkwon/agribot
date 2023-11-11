@@ -17,6 +17,18 @@ git clone --recurse-submodules https://github.com/jrkwon/agribot
 
 To run `agribot`, you must install SDKs for sensors and additional packages, including `YDLIDAR SDK` and `Cartographer`. The details can be found https://github.com/jrkwon/agribot_ros.
 
+## How to Use
+
+Activate the `agribot` environment.
+```
+conda activate agribot
+```
+
+Then `source` the `setup.bash`. You must be at the `agribot` directory when you do this.
+```
+source setup.bash
+```
+
 ## Acknowledgments
 
 ### System Design and Implementation
