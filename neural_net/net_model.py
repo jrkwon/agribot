@@ -46,7 +46,7 @@ def model_agribot():
         Flatten(),
         Dense(128, activation='relu'),
         Dropout(0.5),
-        Dense(config['num_outputs'])], activation="linear")
+        Dense(config['num_outputs'])])
 
 
 def model_ce491():
@@ -247,7 +247,7 @@ class NetModel:
     # model_path = '../data/2007-09-22-12-12-12.
     def load(self):
 
-        self.model.load_model(self.model_path)
+        self.model = tf.keras.models.load_model(self.model_path, safe_mode=False)
         """
         from keras.models import model_from_json
         print('self.model_path',self.model_path)
