@@ -10,10 +10,14 @@ History:
 ###############################################################################
 # constant definition
 
+#####################
 # network model type
+# CNN
 NET_TYPE_JAEROCK     = 0
 NET_TYPE_JAEROCK_VEL = 2
 NET_TYPE_CE491       = 1
+NET_TYPE_AGRIBOT     = 3
+# LSTM
 NET_TYPE_CONVLSTM    = 10
 
 # file extension

@@ -14,7 +14,7 @@ version: 1.00
 ## neural network 
 
 # network definition
-network_type: 0        # refer to neural_net/const.py
+network_type: 3        # refer to neural_net/const.py
 lstm: False
 
 lstm_timestep: 20
@@ -27,7 +27,7 @@ normalize_data: True
 # training 
 # data_shuffle: True
 validation_rate: 0.2
-num_epochs: 5
+num_epochs: 50
 batch_size: 64
 num_inputs: 1     # input: image, velocity
 num_outputs: 1    # output: steering_angle, throttle

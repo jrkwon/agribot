@@ -25,6 +25,30 @@ import utilities
 config = Config.neural_net
 config_rn = Config.run_neural
 
+
+def model_agribot():
+    input_shape = (config['input_image_height'],
+                    config['input_image_width'],
+                    config['input_image_depth'])
+
+    return Sequential([
+        Lambda(lambda x: x/127.5 - 1.0, input_shape=input_shape),
+        Conv2D(filters=32, kernel_size=3, activation='relu'),
+        MaxPooling2D(pool_size=2),
+        Conv2D(filters=64, kernel_size=3, activation='relu'),
+        MaxPooling2D(pool_size=2),
+        Conv2D(filters=128, kernel_size=3, activation='relu'),
+        MaxPooling2D(pool_size=2),
+        Conv2D(filters=256, kernel_size=3, activation='relu'),
+        MaxPooling2D(pool_size=2),
+        Conv2D(filters=256, kernel_size=3, activation='relu'),
+        MaxPooling2D(pool_size=2),
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dropout(0.5),
+        Dense(config['num_outputs'])], activation="linear")
+
+
 def model_ce491():
     input_shape = (config['input_image_height'],
                     config['input_image_width'],
@@ -159,6 +183,8 @@ class NetModel:
     def _model(self):
         if config['network_type'] == const.NET_TYPE_JAEROCK:
             self.model = model_jaerock()
+        elif config['network_type'] == const.NET_TYPE_AGRIBOT:
+            self.model = model_agribot()
         elif config['network_type'] == const.NET_TYPE_JAEROCK_VEL:
             self.model = model_jaerock_vel()
         elif config['network_type'] == const.NET_TYPE_CE491:
