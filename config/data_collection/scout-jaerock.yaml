@@ -37,10 +37,10 @@ base_pose_topic: /scout_velocity_controller/odom
 
 # crop (capture) area from a camera image
 # - gazebo simulated camera resolution: 800x800
-image_crop_x1: 0
-image_crop_y1: 155   # 373
-image_crop_x2: 640
-image_crop_y2: 375   # 516
+image_crop_x1: 120 #0
+image_crop_y1: 130 #155   # 373
+image_crop_x2: 520 #640
+image_crop_y2: 390 #375   # 516
 
 image_width: 640
 image_height: 480
