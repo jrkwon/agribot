@@ -14,7 +14,6 @@ from keras.models import Sequential, Model
 from keras.layers import Lambda, Dropout, Flatten, Dense, Activation, concatenate
 from keras.layers import Conv2D, Convolution2D, MaxPooling2D, BatchNormalization, Input
 from keras import losses, optimizers
-import keras.backend as K
 import tensorflow as tf
 
 import const
@@ -122,8 +121,8 @@ def model_jaerock_vel():
     return model
 
 def model_convlstm():
-    from keras.layers.recurrent import LSTM
-    from keras.layers.wrappers import TimeDistributed
+    from keras.layers import LSTM
+    from keras.layers import TimeDistributed
 
     # redefine input_shape to add one more dims
     img_shape = (None, config['input_image_height'],
@@ -176,9 +175,6 @@ class NetModel:
         ### --> move to gpu_options to support using multiple network models
         ## to address the error:
         ##   Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR
-        #gpu_options = tf.GPUOptions(allow_growth=True)
-        #sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-        #K.tensorflow_backend.set_session(sess)
 
         self._model()
 
