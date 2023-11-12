@@ -27,11 +27,12 @@ def main(model_path, input):
     image = cv2.imread(image_file_name)
     image_process = ImageProcess()
 
+    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     # show the image
     fig, (ax1, ax2) = plt.subplots(1, 2)
 
-    ax1.imshow(image)
-    ax1.set(title = 'original image')
+    ax1.imshow(rgb_image)
+    ax1.set(title = 'Original image in RGB')
 
     # if collected data is not cropped then crop here
     # otherwise do not crop.
@@ -55,8 +56,9 @@ def main(model_path, input):
         steering_angle = predict[0][0]
         fig.suptitle('pred_steering:{}'.format(steering_angle))
 
-    ax2.imshow(image)
-    ax2.set(title = 'resize and processed')
+    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    ax2.imshow(rgb_image)
+    ax2.set(title = 'Resized/Processed in RGB')
 
     plt.show()
 
