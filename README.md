@@ -2,6 +2,7 @@
 
 ## History
 
+* 11/12/2023: Add `test_drive.py` replacig a direct use of `drive_log.py`
 * 11/11/2023: Test in the latest TensorFlow
 * 11/11/2023: Change model format to Keras
 * 11/11/2023: Clean up
