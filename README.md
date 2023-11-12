@@ -89,7 +89,7 @@ conda activate agribots
 cd path/to/agribot
 
 source setup.bash
-python neural_net/drive_log.py e2e-dataset/jaerock/2023-10-31-14-56-16_scout-jaerock-orchard--aug_n3_2023-11-12-16-25-31-079.keras e2e-dataset/jaerock/2023-10-31-14-56-16
+python neural_net/test_drive.py e2e-dataset/jaerock/2023-10-31-14-56-16_scout-jaerock-orchard--aug_n3_2023-11-12-16-25-31-079.keras e2e-dataset/jaerock/2023-10-31-14-56-16
 ```
 
 

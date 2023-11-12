@@ -274,25 +274,10 @@ class DriveLog:
 
 
 
-###############################################################################
-#       
-def main(weight_name, data_folder_name):
-    from drive_log import DriveLog
-
-    drive_log = DriveLog(weight_name, data_folder_name) 
-    drive_log.run() # data folder path to test
-       
+     
 
 ###############################################################################
 #       
 if __name__ == '__main__':
-    import sys
+    print('drive_log.py is not for running from the command line. Use test_drive.py.')
 
-    try:
-        if (len(sys.argv) != 3):
-            exit('Usage:\n$ python {} weight_name data_folder_name'.format(sys.argv[0]))
-        
-        main(sys.argv[1], sys.argv[2])
-
-    except KeyboardInterrupt:
-        print ('\nShutdown requested. Exiting...')
