@@ -15,18 +15,7 @@ Specify yaml file names for each system setting.
 - `run_neural`
 
 ### Naming Convention
-Use `<vehicle>-<user>-<track>.yaml` for a yaml filename. 
+Use `<vehicle>-<user>-<track>{--note}.yaml` for a yaml filename. 
 
-For example, `funsion_jaerock_jaerock2` means that vehicle `fusion` is being used by user `jaerock` on track `jaerock2`.
+For example, `scout-jaerock-orchard--aug` means that vehicle `scout` is being used by user `jaerock` on the `orchard` world with the `augmentation` option.
 
-## data_collection
-- `fusion_template.yaml`: configuration example of fusion for data_collection package
-- `rover_template.yaml`: configuration example of rover for data_collection package
-
-## neural_net
-- `fusion_template.yaml`: configuration example of fusion for neural_net module
-- `rover_template.yaml`: configuration example of rover for neural_net module
- 
-## run_neural
-- `fusion_template.yaml`: configuration example of fusion for run_neural package
-- `rover_template.yaml`: configuration example of rover for run_neural package
