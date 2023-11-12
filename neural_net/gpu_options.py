@@ -8,13 +8,14 @@ History:
 @author: jaerock
 """
 
-import keras.backend as K
 import tensorflow as tf
 
 def set():
     # to address the error:
     #   Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR
     
-    gpu_options = tf.GPUOptions(allow_growth=True)
-    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-    K.tensorflow_backend.set_session(sess)
+    # Allow GPU memory growth
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    if gpus:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
