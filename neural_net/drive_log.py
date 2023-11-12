@@ -182,7 +182,7 @@ class DriveLog:
                                             Config.neural_net['input_image_width'],
                                             Config.neural_net['input_image_depth'])                    
 
-                predict = self.net_model.model.predict(trans_image)
+                predict = self.net_model.model.predict(trans_image, verbose=0)
                 pred_steering_angle = predict[0][0]
                 pred_steering_angle = pred_steering_angle / Config.neural_net['steering_angle_scale']
             
