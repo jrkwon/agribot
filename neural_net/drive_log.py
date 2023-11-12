@@ -13,7 +13,8 @@ import numpy as np
 #import keras
 #import sklearn
 #import resnet
-from progressbar import ProgressBar
+#from progressbar import ProgressBar
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 import const
@@ -32,19 +33,37 @@ class DriveLog:
     # data_path = 'path_to_drive_data'  e.g. ../data/2017-09-22-10-12-34-56'
        
     def __init__(self, model_path, data_path):
+        
         if data_path[-1] == '/':
             data_path = data_path[:-1]
 
         loc_slash = data_path.rfind('/')
         if loc_slash != -1: # there is '/' in the data path
-            model_name = data_path[loc_slash+1:] # get folder name
+            data_name = data_path[loc_slash+1:] # get folder name
             #model_name = model_name.strip('/')
         else:
-            model_name = data_path
-
-        csv_path = data_path + '/' + model_name + const.DATA_EXT   
+            data_name = data_path
         
+        if model_path[-1] == '/':
+            model_path = model_path[:-1]
+
+        loc_slash = model_path.rfind('/')
+        if loc_slash != -1: # there is '/' in the data path
+            model_name = model_path[loc_slash+1:] # get folder name
+            #model_name = model_name.strip('/')
+        else:
+            model_name = model_path
+
+        csv_path = data_path + '/' + data_name + const.DATA_EXT   
+        
+        #print(csv_path)
+        #print(data_path)
+        #print(model_name)
+
+        self.model_name = model_name
         self.data_path = data_path
+        self.filename_base = model_path + '_' + data_name
+        #print(self.filename_base)
         self.data = DriveData(csv_path, utilities.get_current_timestamp())
         
         self.test_generator = None
@@ -98,7 +117,7 @@ class DriveLog:
         plt.xlim(-1.0, 1.0)
         plt.plot(np.min(self.differences), np.max(self.differences))
         plt.tight_layout()
-        self._savefigs(plt, self.data_path + '_err_hist')
+        self._savefigs(plt, self.filename_base + '_err_hist')
 
         plt.figure()
         # Plot a Scatter Plot of the Error
@@ -112,7 +131,7 @@ class DriveLog:
         plt.ylim([-1.0, 1.0])
         plt.plot([-1.0, 1.0], [-1.0, 1.0], color='k', linestyle='-', linewidth=.1)
         plt.tight_layout()
-        self._savefigs(plt, self.data_path + '_scatter')
+        self._savefigs(plt, self.filename_base + '_scatter')
 
         plt.figure()
         # Plot a Side-By-Side Comparison
@@ -128,7 +147,7 @@ class DriveLog:
         plt.ylabel('Steering Angle')
         plt.legend(['ground truth', 'prediction'], loc='upper right')
         plt.tight_layout()
-        self._savefigs(plt, self.data_path + '_comparison')
+        self._savefigs(plt, self.filename_base + '_comparison')
 
         # show all figures
         #plt.show()
@@ -140,12 +159,13 @@ class DriveLog:
         
         self._prepare_data()
         #fname = self.data_path + const.LOG_EXT
-        fname = self.data_path + const.LOG_EXT # use model name to save log
+        fname = self.filename_base + const.LOG_EXT # use model name to save log
         
         file = open(fname, 'w')
 
         #print('image_name', 'label', 'predict', 'abs_error')
-        bar = ProgressBar()
+        #bar = ProgressBar()
+        bar = tqdm(self.test_data, desc="Processing", unit="file")
 
         file.write('image_name, label_steering_angle, pred_steering_angle, abs_error, squared_error\n')
 
@@ -154,7 +174,7 @@ class DriveLog:
             #images_names = []
             cnt = 1
 
-            for image_name, velocity, measurement in bar(self.test_data):   
+            for image_name, velocity, measurement in bar: #self.test_data:   
                 image_fname = self.data_path + '/' + image_name
                 image = cv2.imread(image_fname)
 
@@ -199,7 +219,7 @@ class DriveLog:
                     del images[0]
                 cnt += 1
         else:
-            for image_name, velocity, measurement in bar(self.test_data):   
+            for image_name, velocity, measurement in bar: #self.test_data:   
                 image_fname = self.data_path + '/' + image_name
                 image = cv2.imread(image_fname)
 
@@ -214,7 +234,7 @@ class DriveLog:
                 image = self.image_process.process(image)
                 
                 npimg = np.expand_dims(image, axis=0)
-                predict = self.net_model.model.predict(npimg)
+                predict = self.net_model.model.predict(npimg, verbose=0)
                 pred_steering_angle = predict[0][0]
                 pred_steering_angle = pred_steering_angle / Config.neural_net['steering_angle_scale']
                 
@@ -234,20 +254,26 @@ class DriveLog:
                                 +','+str(diff**2)
 
                 file.write(log+'\n')
+                
+                #bar.update(1)  # Update the progress bar
+                #bar.refresh()  # Refresh the display
+                # Flush the output
+                #print("\033[0;0H", end='', flush=True)
+
         
         file.close()
         print('Saved ' + fname + '.')
 
+        bar.close()
         self._plot_results()
 
-
-
-from drive_log import DriveLog
 
 
 ###############################################################################
 #       
 def main(weight_name, data_folder_name):
+    from drive_log import DriveLog
+
     drive_log = DriveLog(weight_name, data_folder_name) 
     drive_log.run() # data folder path to test
        

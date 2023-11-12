@@ -10,7 +10,8 @@ History:
 
 
 import pandas as pd
-from progressbar import ProgressBar
+#from progressbar import ProgressBar
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -152,9 +153,11 @@ class DriveData:
         if (read): 
             num_data = len(self.df)
             print("\nnum_data:\t",num_data-1)
-            bar = ProgressBar()
+            #bar = ProgressBar()
+            bar = tqdm(range(1, num_data - 1), desc="Processing", unit="item")
+
             
-            for i in bar(range(1,num_data-1)): # we don't have a title
+            for i, _ in enumerate(bar): #(range(1,num_data-1)): # we don't have a title
                 #print("self.image_fname_n[i]",self.image_fname_n[i],i)
                 self.image_names.append(self.image_fname_n[i])
                 #print(len(self.image_names))
@@ -174,6 +177,8 @@ class DriveData:
                 self.positions_xyz.append((float(self.pos_x_n[i]), 
                                             float(self.pos_y_n[i]), 
                                             float(self.pos_z_n[i])))
+            
+            bar.close()
 
 
     def get_data_path(self):
