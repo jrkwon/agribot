@@ -41,10 +41,14 @@ def model_agribot():
         MaxPooling2D(pool_size=2),
         Conv2D(filters=256, kernel_size=3, activation='relu'),
         MaxPooling2D(pool_size=2),
-        Conv2D(filters=256, kernel_size=3, activation='relu'),
+        Conv2D(filters=256, kernel_size=3, activation='relu', name='conv2d_last'),
         MaxPooling2D(pool_size=2),
         Flatten(),
+        Dense(1024, activation='relu'),
+        Dropout(0.5),
         Dense(128, activation='relu'),
+        Dropout(0.5),
+        Dense(64, activation='relu'),
         Dropout(0.5),
         Dense(config['num_outputs'])])
 
@@ -217,7 +221,8 @@ class NetModel:
 
         self.model.compile(loss=losses.mean_squared_error,
                     optimizer=optimizers.Adam(learning_rate=learning_rate), 
-                    metrics=['accuracy'])
+        #            metrics=['accuracy'])
+                    metrics=['mse'])
         # if config['steering_angle_tolerance'] == 0.0:
         #     self.model.compile(loss=losses.mean_squared_error,
         #               optimizer=optimizers.Adam(),
