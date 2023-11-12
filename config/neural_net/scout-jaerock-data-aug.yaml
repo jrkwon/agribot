@@ -25,10 +25,10 @@ cnn_lr:  0.001          # default of Adam is 0.001
 normalize_data: True
 
 # training 
-# data_shuffle: True
+data_shuffle: True
 validation_rate: 0.3
 num_epochs: 100
-batch_size: 64
+batch_size: 32
 num_inputs: 1     # input: image, velocity
 num_outputs: 1    # output: steering_angle, throttle
 early_stopping_patience: 3
@@ -38,11 +38,11 @@ tensorboard_log_dir: logs/scalars/
 # data augmentation
 data_aug_flip: True
 data_aug_bright: True
-data_aug_shift: True
+data_aug_shift: False
 
 # input image size to the neural network
-input_image_width:  320 #160
-input_image_height: 320 #160
+input_image_width:  160
+input_image_height: 160
 input_image_depth:  3
 
 # steering data preprocessing
