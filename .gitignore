@@ -9,7 +9,7 @@ e2e-dataset/
 *.mp4
 *.h5
 *.json
-*.png
+
 
 ###############
 # rtabmap 3D model ply
