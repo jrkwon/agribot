@@ -40,7 +40,7 @@ def model_agribot():
         MaxPooling2D(pool_size=2),
         #Conv2D(filters=256, kernel_size=3, activation='relu'),
         #MaxPooling2D(pool_size=2),
-        Conv2D(filters=256, kernel_size=3, activation='relu', name='conv2d_last'),
+        Conv2D(filters=256, kernel_size=3, activation='relu', name=const.LAST_CONV_LAYER),
         MaxPooling2D(pool_size=2),
         Flatten(),
         Dense(1024),
@@ -63,7 +63,7 @@ def model_ce491():
         Conv2D(36, (5, 5), strides=(2,2), activation='relu'),
         Conv2D(48, (5, 5), strides=(2,2), activation='relu'),
         Conv2D(64, (3, 3), activation='relu'),
-        Conv2D(64, (3, 3), activation='relu', name='conv2d_last'),
+        Conv2D(64, (3, 3), activation='relu', name=const.LAST_CONV_LAYER),
         Flatten(),
         Dense(100, activation='relu'),
         Dense(50, activation='relu'),
@@ -81,7 +81,7 @@ def model_jaerock():
         Conv2D(36, (5, 5), strides=(2,2)),
         Conv2D(48, (5, 5), strides=(2,2)),
         Conv2D(64, (3, 3)),
-        Conv2D(64, (3, 3), name='conv2d_last'),
+        Conv2D(64, (3, 3), name=const.LAST_CONV_LAYER),
         Flatten(),
         Dense(1000),
         Dense(100),
@@ -101,7 +101,7 @@ def model_jaerock_vel():
     conv_2 = Conv2D(36, (5, 5), strides=(2,2))(conv_1)
     conv_3 = Conv2D(48, (5, 5), strides=(2,2))(conv_2)
     conv_4 = Conv2D(64, (3, 3))(conv_3)
-    conv_5 = Conv2D(64, (3, 3), name='conv2d_last')(conv_4)
+    conv_5 = Conv2D(64, (3, 3), name=const.LAST_CONV_LAYER)(conv_4)
     flat = Flatten()(conv_5)
     fc_1 = Dense(1000, name='fc_1')(flat)
     fc_2 = Dense(100, name='fc_2')(fc_1)
@@ -136,7 +136,7 @@ def model_convlstm():
     conv_2    = TimeDistributed(Convolution2D(36, (5, 5), strides=(2,2)), name='conv_2')(conv_1)
     conv_3    = TimeDistributed(Convolution2D(48, (5, 5), strides=(2,2)), name='conv_3')(conv_2)
     conv_4    = TimeDistributed(Convolution2D(64, (3, 3)), name='conv_4')(conv_3)
-    conv_5    = TimeDistributed(Convolution2D(64, (3, 3)), name='conv2d_last')(conv_4)
+    conv_5    = TimeDistributed(Convolution2D(64, (3, 3)), name=const.LAST_CONV_LAYER)(conv_4)
     flat      = TimeDistributed(Flatten(), name='flat')(conv_5)
     fc_1      = TimeDistributed(Dense(1000, activation='relu'), name='fc_1')(flat)
     fc_2      = TimeDistributed(Dense(100, activation='relu' ), name='fc_2')(fc_1)

@@ -13,6 +13,10 @@ History:
 # constant definition
 
 #####################
+# network vis
+LAST_CONV_LAYER      = "conv2d_last"
+
+#####################
 # network model type
 # CNN
 NET_TYPE_JAEROCK     = 0
