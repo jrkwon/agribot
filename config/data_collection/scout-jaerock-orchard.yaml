@@ -14,7 +14,7 @@ version: 1.00
 ## data collection - save full image
 
 # driving simulator
-steering_angle_max: 450
+steering_angle_max: 90 #450
 steering_angle_tolerance: 0.015 # around 7.5 degree
 
 # image cropping: True for legacy datasets. 

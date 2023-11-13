@@ -10,7 +10,8 @@ History:
 
 import cv2
 import numpy as np
-from progressbar import ProgressBar
+#from progressbar import ProgressBar
+from tqdm import tqdm
 from PIL import Image, ImageDraw, ImageFont
 import os
 
@@ -52,10 +53,10 @@ class DisplaySettings:
 
         #########################
         # steering wheel settings
-        self.label_wheel = ImageSettings('drive_view_img/steering_wheel_150x150.png', 0)
-        self.infer_wheel = ImageSettings('drive_view_img/steering_wheel_green_150x150.png', 1)
+        self.label_wheel = ImageSettings('drive_view_img/steering_wheel_100x100.png', 0)
+        self.infer_wheel = ImageSettings('drive_view_img/steering_wheel_green_100x100.png', 1)
         # logo
-        self.logo = ImageSettings('drive_view_img/bimi_m_200x40.png', 2)
+        self.logo = ImageSettings('drive_view_img/bimi_m_100x20.png', 3)
         
         ###############
         # font settings
@@ -152,14 +153,14 @@ class DriveView:
                                                 Config.neural_net['input_image_height'],
                                                 Config.neural_net['input_image_width'],
                                                 Config.neural_net['input_image_depth'])                    
-                    predict = self.net_model.model.predict(trans_image)
+                    predict = self.net_model.model.predict(trans_image, verbose=0)
                     pred_steering_angle = predict[0][0]
                     pred_steering_angle = pred_steering_angle / Config.neural_net['steering_angle_scale']
                     del images[0]
                 lstm_time_step += 1
             else: # not lstm -- normal cnn
                 npimg = np.expand_dims(image, axis=0)
-                predict = self.net_model.model.predict(npimg)
+                predict = self.net_model.model.predict(npimg, verbose=0)
                 pred_steering_angle = predict[0][0]
                 pred_steering_angle = pred_steering_angle / Config.neural_net['steering_angle_scale']
 
@@ -245,12 +246,12 @@ class DriveView:
     #
     def run(self):
         
-        bar = ProgressBar()
+        #bar = ProgressBar()
 
         ############################
         # steering angle raw value:
         # -1 to 1 (0 --> 1: left, 0 --> -1: right)
-        for i in bar(range(self.data_len)):
+        for i in tqdm(range(self.data_len)):
             abs_path_image = self.data_path + '/' + self.drive_data.image_names[i]
             input_image = Image.open(abs_path_image)
             steering_angle = self.drive_data.measurements[i][0] # -1 to 1 scale
