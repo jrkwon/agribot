@@ -30,7 +30,7 @@ base_pose_topic: /scout_velocity_controller/odom
 ## when training and running, cropping input image 
 
 # crop (capture) area from a camera image
-# - gazebo simulated camera resolution: 800x800
+# - gazebo simulated camera resolution: 800x800 (deafult)
 image_crop_x1: 120 #0
 image_crop_y1: 240 #155   # 373
 image_crop_x2: 520 #640
