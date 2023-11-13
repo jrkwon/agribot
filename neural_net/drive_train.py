@@ -93,10 +93,11 @@ class DriveTrain:
         
         self.num_train_samples = len(self.train_data)
         self.num_valid_samples = len(self.valid_data)
-        
+
+        print(" \n::::: TRAINING DATA :::::")        
         print('Train samples: ', self.num_train_samples)
         print('Valid samples: ', self.num_valid_samples)
-    
+        print('\n\n')
                                           
     ###########################################################################
     # group the samples by the number of timesteps
@@ -307,6 +308,7 @@ class DriveTrain:
         self.valid_generator = _generator(self.valid_data)
         
         if (show_summary):
+            print("::::: NETWORK ARTCHITECTURE :::::\n")
             self.net_model.model.summary()
     
     ###########################################################################

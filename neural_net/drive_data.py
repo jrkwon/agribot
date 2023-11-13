@@ -35,8 +35,7 @@ class DriveData:
 
 
     def read(self, read = True, show_statistics = True, normalize = True):
-        self.df = pd.read_csv(self.csv_fname, header=0, index_col=False) #names=self.csv_header, index_col=False)
-        print(self.df.columns)
+        self.df = pd.read_csv(self.csv_fname, header=0, index_col=False) 
 
         ############################################
         # show statistics
