@@ -41,15 +41,19 @@ class DriveData:
         ############################################
         # show statistics
         if (show_statistics):
-            print('\n####### data statistics #########')
-            print('Steering Command Statistics:')
+            print('\n::::: DATA STATISTICS :::::\n')
+
+            print('Steering Command Statistics')
+            print('---------------------------')
             print(self.df['steering_angle'].describe())
 
-            print('\nThrottle Command Statistics:')
+            print('\nThrottle Command Statistics')
+            print('---------------------------')
             # Throttle Command Statistics
             print(self.df['throttle'].describe())
 
-            print('\nBrake Command Statistics:')
+            print('\nBrake Command Statistics')
+            print('------------------------')
             # Throttle Command Statistics
             print(self.df['brake'].describe())
                 
@@ -75,7 +79,7 @@ class DriveData:
             remove_list = []
             samples_per_bin = 200
 
-            for j in range(num_bins):
+            for j in tqdm(range(num_bins)):
                 list_ = []
                 for i in range(0,len(self.df['steering_angle'])):
                     if float(self.df.loc[i,'steering_angle']) >= bins[j] and float(self.df.loc[i,'steering_angle']) <= bins[j+1]:
@@ -84,7 +88,7 @@ class DriveData:
                 list_ = list_[samples_per_bin:]
                 remove_list.extend(list_)
             
-            print('\r####### data normalization #########')
+            print('::::: DATA NORMALIZATION :::::')
             print('Removed: \t', len(remove_list))
             self.df.drop(self.df.index[remove_list], inplace = True)
             self.df.reset_index(inplace = True)
