@@ -27,3 +27,7 @@ LOG_EXT              = '_log.csv'
 
 # dir names for ckpt
 CKPT_DIR             = 'ckpt'
+
+######################
+# data format
+DATA_HEADER = "image_fname, steering_angle, throttle, brake, time, vel, vel_x, vel_y, vel_z, pos_x, pos_y, pos_z\n"

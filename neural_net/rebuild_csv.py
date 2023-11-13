@@ -11,14 +11,12 @@ History:
 
 import sys
 import os
-from progressbar import ProgressBar
-import pandas as pd
+#from progressbar import ProgressBar
+from tqdm import tqdm
 
 import const
 from drive_data import DriveData
 from config import Config
-import utilities
-
 
 ###############################################################################
 #
@@ -26,8 +24,6 @@ def build_csv(data_path):
     # add '/' at the end of data_path if user doesn't specify
     if data_path[-1] != '/':
         data_path = data_path + '/'
-
-    print("data_path",data_path)
 
     # find the second '/' from the end to get the folder name
     loc_dir_delim = data_path[:-1].rfind('/')
@@ -38,66 +34,37 @@ def build_csv(data_path):
         folder_name = data_path[:-1]
         csv_file = folder_name + const.DATA_EXT
 
-    csv_file = data_path + folder_name +const.DATA_EXT
-    print("csv_file",csv_file)
-    print("folder_name",folder_name)
-    '''
     csv_backup_name = data_path + csv_file + '.bak'
     os.rename(data_path + csv_file, csv_backup_name)
     print('rename ' + data_path + csv_file + ' to ' + csv_backup_name)
-    '''
-    #data = DriveData(csv_backup_name, utilities.get_current_timestamp())
-    #data.read(normalize = False)
-    data = pd.read_csv(csv_file, index_col=False)
-    Steering_ang = list(map(float,data.loc[1:,'steering_angle'].to_list()))
-    throttle_n=list(map(float,data.loc[1:,'throttle'].to_list()))
-    brake_n=list(map(float,data.loc[1:,'brake'].to_list()))
-    linux_time_n   = list(map(float,data.loc[1:,'time'].to_list()))
-    vel_n          = list(map(float,data.loc[1:,'vel'].to_list()))
-    vel_x_n        = list(map(float,data.loc[1:,'vel_x'].to_list()))
-    vel_y_n        = list(map(float,data.loc[1:,'vel_y'].to_list()))
-    vel_z_n        = list(map(float,data.loc[1:,'vel_z'].to_list()))
-    pos_x_n        = list(map(float,data.loc[1:,'pos_x'].to_list()))
-    pos_y_n        = list(map(float,data.loc[1:,'pos_y'].to_list()))
-    pos_z_n        = list(map(float,data.loc[1:,'pos_z'].to_list()))
-    image_fname_n  = data.loc[1:,'image_fname'].to_list()
+
+    data = DriveData(csv_backup_name)
+    data.read(normalize = False)
 
     new_csv = []
-    
+
     # check image exists
-    bar = ProgressBar()
-    print('len(data)',len(data))
-    for i in bar(range(1,len(data))):
-        print("i" , i)
-        if os.path.exists(data_path + image_fname_n[i]):
-            if Config.data_collection['brake'] is True:
-                new_csv.append(image_fname_n[i] + ','
-                            + str(Steering_ang[i]) + ','
-                            + str(throttle_n[i]) + ','
-                            + str(brake_n[i]) + ',' # brake
-                            + str(linux_time_n[i]) + ','
-                            + str(vel_n[i]) + ','
-                            + str(vel_x_n[i]) + ','
-                            + str(vel_y_n[i]) + ','
-                            + str(vel_z_n[i]) + ','
-                            + str(pos_x_n[i]) + ','
-                            + str(pos_y_n[i]) + ','
-                            + str(pos_z_n[i]) + '\n')
-            else:
-                new_csv.append(image_fname_n[i] + ','
-                            + str(Steering_ang[i]) + ','
-                            + str(throttle_n[i]) + ','
-                            + str(linux_time_n[i]) + ','
-                            + str(vel_n[i]) + ','
-                            + str(vel_x_n[i]) + ','
-                            + str(vel_y_n[i]) + ','
-                            + str(vel_z_n[i]) + ','
-                            + str(pos_x_n[i]) + ','
-                            + str(pos_y_n[i]) + ','
-                            + str(pos_z_n[i]) + '\n')
+    #bar = ProgressBar()
+    for i in tqdm(range(len(data.df))):
+        if os.path.exists(data_path + data.image_names[i]):
+            new_csv.append(data.image_names[i] + ','
+                        + str(data.measurements[i][0]) + ','
+                        + str(data.measurements[i][1]) + ','
+                        + str(data.measurements[i][2]) + ',' 
+                        + str(data.time_stamps[i]) + ','
+                        + str(data.velocities[i]) + ','
+                        + str(data.velocities_xyz[i][0]) + ','
+                        + str(data.velocities_xyz[i][1]) + ','
+                        + str(data.velocities_xyz[i][2]) + ','
+                        + str(data.positions_xyz[i][0]) + ','
+                        + str(data.positions_xyz[i][1]) + ','
+                        + str(data.positions_xyz[i][2]) + '\n')
 
     # write a new csv
     new_csv_fh = open(data_path + csv_file, 'w')
+    #line = "image_fname, steering_angle, throttle, brake, time, vel, vel_x, vel_y, vel_z, pos_x, pos_y, pos_z\n"
+    new_csv_fh.write(const.DATA_HEADER)
+    
     for i in range(len(new_csv)):
         new_csv_fh.write(new_csv[i])
     new_csv_fh.close()

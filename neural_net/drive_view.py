@@ -132,11 +132,8 @@ class DriveView:
             # don't forget OSCAR's default color space is BGR (cv2's default)
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            # if collected data is not cropped then crop here
-            # otherwise do not crop.
-            if Config.data_collection['crop'] is not True:
-                image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                            Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+            image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
+                        Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
 
             image = cv2.resize(image, (Config.neural_net['input_image_width'],
                                     Config.neural_net['input_image_height']))
@@ -176,65 +173,37 @@ class DriveView:
 
         if self.net_model is not None:
             diff = abs(pred_steering_angle - self.drive_data.measurements[i][0])
-            if Config.data_collection['brake'] is True:
-                draw.multiline_text(self.display.info_pos,
-                            "Input:     {}\nThrottle:  {}\nBrake:     {}\nSteering:  {}\nPredicted: {}\nAbs Diff:  {}\nVelocity:  {:.2f}\nPosition:  (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
-                                    self.drive_data.image_names[i], 
-                                    self.drive_data.measurements[i][1],
-                                    self.drive_data.measurements[i][2],
-                                    # steering angle: -1 to 1 scale
-                                    self.drive_data.measurements[i][0],
-                                    pred_steering_angle,
-                                    diff,
-                                    self.drive_data.velocities[i], 
-                                    self.drive_data.positions_xyz[i][0], 
-                                    self.drive_data.positions_xyz[i][1], 
-                                    self.drive_data.positions_xyz[i][2]), 
-                                    font=self.display.font, fill=self.display.font_color)
-            else:
-                draw.multiline_text(self.display.info_pos,
-                            "Input:     {}\nThrottle:  {}\nSteering:  {}\nPredicted: {}\nAbs Diff:  {}\nVelocity:  {:.2f}\nPosition:  (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
-                                    self.drive_data.image_names[i], 
-                                    self.drive_data.measurements[i][1],
-                                    # steering angle: -1 to 1 scale
-                                    self.drive_data.measurements[i][0],
-                                    pred_steering_angle,
-                                    diff,
-                                    self.drive_data.velocities[i], 
-                                    self.drive_data.positions_xyz[i][0], 
-                                    self.drive_data.positions_xyz[i][1], 
-                                    self.drive_data.positions_xyz[i][2]), 
-                                    font=self.display.font, fill=self.display.font_color)
+            draw.multiline_text(self.display.info_pos,
+                        "Input:     {}\nThrottle:  {}\nBrake:     {}\nSteering:  {}\nPredicted: {}\nAbs Diff:  {}\nVelocity:  {:.2f}\nPosition:  (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
+                                self.drive_data.image_names[i], 
+                                self.drive_data.measurements[i][1],
+                                self.drive_data.measurements[i][2],
+                                # steering angle: -1 to 1 scale
+                                self.drive_data.measurements[i][0],
+                                pred_steering_angle,
+                                diff,
+                                self.drive_data.velocities[i], 
+                                self.drive_data.positions_xyz[i][0], 
+                                self.drive_data.positions_xyz[i][1], 
+                                self.drive_data.positions_xyz[i][2]), 
+                                font=self.display.font, fill=self.display.font_color)
 
             loc_dot = self.drive_data.image_names[i].rfind('.')
             target_img_name = "{}_{:.2f}_{:.2f}{}".format(self.drive_data.image_names[i][:loc_dot], 
                                                         pred_steering_angle, degree_angle, const.IMAGE_EXT)
         else:
-            if Config.data_collection['brake'] is True:
-                draw.multiline_text(self.display.info_pos,
-                            "Input:     {}\nThrottle:  {}\nBrake:     {}\nSteering:  {}\nVelocity: {:.2f}\nPosition: (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
-                                    self.drive_data.image_names[i], 
-                                    self.drive_data.measurements[i][1],
-                                    self.drive_data.measurements[i][2],
-                                    # steering angle: -1 to 1 scale
-                                    self.drive_data.measurements[i][0],
-                                    self.drive_data.velocities[i], 
-                                    self.drive_data.positions_xyz[i][0], 
-                                    self.drive_data.positions_xyz[i][1], 
-                                    self.drive_data.positions_xyz[i][2]), 
-                                    font=self.display.font, fill=self.display.font_color)
-            else:
-                draw.multiline_text(self.display.info_pos,
-                            "Input:     {}\nThrottle:  {}\nSteering:  {}\nVelocity: {:.2f}\nPosition: (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
-                                    self.drive_data.image_names[i], 
-                                    self.drive_data.measurements[i][1],
-                                    # steering angle: -1 to 1 scale
-                                    self.drive_data.measurements[i][0],
-                                    self.drive_data.velocities[i], 
-                                    self.drive_data.positions_xyz[i][0], 
-                                    self.drive_data.positions_xyz[i][1], 
-                                    self.drive_data.positions_xyz[i][2]), 
-                                    font=self.display.font, fill=self.display.font_color)
+            draw.multiline_text(self.display.info_pos,
+                        "Input:     {}\nThrottle:  {}\nBrake:     {}\nSteering:  {}\nVelocity: {:.2f}\nPosition: (x:{:.2f}, y:{:.2f}, z:{:.2f})".format(
+                                self.drive_data.image_names[i], 
+                                self.drive_data.measurements[i][1],
+                                self.drive_data.measurements[i][2],
+                                # steering angle: -1 to 1 scale
+                                self.drive_data.measurements[i][0],
+                                self.drive_data.velocities[i], 
+                                self.drive_data.positions_xyz[i][0], 
+                                self.drive_data.positions_xyz[i][1], 
+                                self.drive_data.positions_xyz[i][2]), 
+                                font=self.display.font, fill=self.display.font_color)
             
             loc_dot = self.drive_data.image_names[i].rfind('.')
             target_img_name = "{}_{:.2f}_{:.2f}{}".format(self.drive_data.image_names[i][:loc_dot], 

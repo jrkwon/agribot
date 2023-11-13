@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep 23 13:23:14 2017
+
 History:
 11/13/2023: modified for AGRIBOT
 11/28/2020: modified for OSCAR 
@@ -48,10 +49,9 @@ class DriveData:
             # Throttle Command Statistics
             print(self.df['throttle'].describe())
 
-            if Config.data_collection['brake'] is True:
-                print('\nBrake Command Statistics:')
-                # Throttle Command Statistics
-                print(self.df['brake'].describe())
+            print('\nBrake Command Statistics:')
+            # Throttle Command Statistics
+            print(self.df['brake'].describe())
                 
             if Config.neural_net['num_outputs'] == 2:
                 print('\nVelocity Command Statistics:')
@@ -112,13 +112,9 @@ class DriveData:
             
             for i, _ in enumerate(bar): #(range(1,num_data-1)): 
                 self.image_names.append(self.df.loc[i]['image_fname'])
-                if Config.data_collection['brake'] is True:
-                    self.measurements.append((float(self.df.loc[i]['steering_angle']),
-                                            float(self.df.loc[i]['throttle']), 
-                                            float(self.df.loc[i]['brake'])))
-                else:
-                    self.measurements.append((float(self.df.loc[i]['steering_angle']),
-                                            float(self.df.loc[i]['throttle'])))
+                self.measurements.append((float(self.df.loc[i]['steering_angle']),
+                                        float(self.df.loc[i]['throttle']), 
+                                        float(self.df.loc[i]['brake'])))
                 self.time_stamps.append(float(self.df.loc[i]['time']))
                 self.velocities.append(float(self.df.loc[i]['vel']))
                 self.velocities_xyz.append((float(self.df.loc[i]['vel_x']), 
