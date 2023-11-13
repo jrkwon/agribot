@@ -64,9 +64,8 @@ class DataCollection():
             os.makedirs(path)
 
         self.text = open(str(path) + name_datatime + const.DATA_EXT, "w+")
-        line = "file,steering,throttle,brake,time,vel,vel_x,vel_y,vel_z,pos_x,pos_y,pos_z \n"
+        line = "image_fname, steering_angle, throttle, brake, time, vel, vel_x, vel_y, vel_z, pos_x, pos_y, pos_z\n"
         self.text.write(line)
-
 
         self.path = path
 
