@@ -3,6 +3,7 @@
 """
 Created on Sat Sep 23 13:23:14 2017
 History:
+11/13/2023: modified for AGRIBOT
 11/28/2020: modified for OSCAR 
 
 @author: jaerock
@@ -20,17 +21,6 @@ from config import Config
 
 class DriveData:
 
-    if Config.data_collection['brake'] is True:
-        csv_header = ['image_fname', 'steering_angle', 'throttle', 'brake', 
-                    'linux_time', 
-                    'vel', 'vel_x', 'vel_y', 'vel_z',
-                    'pos_x', 'pos_y', 'pos_z' ]
-    else:
-        csv_header = ['image_fname', 'steering_angle', 'throttle', 
-                    'linux_time', 
-                    'vel', 'vel_x', 'vel_y', 'vel_z',
-                    'pos_x', 'pos_y', 'pos_z' ]
-
     def __init__(self, csv_fname, timestamp):
         self.timestamp = timestamp
         self.csv_fname = csv_fname
@@ -41,38 +31,11 @@ class DriveData:
         self.velocities = []
         self.velocities_xyz = []
         self.positions_xyz = []
-        self.Steering_ang=[]
-        self.throttle_n=[]
-        self.brake_n=[]
-        self.linux_time_n = []
-        self.vel_n=[]
-        self.vel_x_n=[]
-        self.vel_y_n=[]
-        self.vel_z_n=[]
-        self.pos_x_n=[]
-        self.pos_y_n=[]
-        self.pos_z_n=[]
-        self.image_fname_n=[]
+
 
     def read(self, read = True, show_statistics = True, normalize = True):
-        self.df = pd.read_csv(self.csv_fname, names=self.csv_header, index_col=False)
-        #self.fname = fname
-        self.linux_time_n   = list(map(float,self.df.loc[1:,'linux_time'].to_list()))
-        self.vel_n          = list(map(float,self.df.loc[1:,'vel'].to_list()))
-        self.vel_x_n        = list(map(float,self.df.loc[1:,'vel_x'].to_list()))
-        self.vel_y_n        = list(map(float,self.df.loc[1:,'vel_y'].to_list()))
-        self.vel_z_n        = list(map(float,self.df.loc[1:,'vel_z'].to_list()))
-        self.pos_x_n        = list(map(float,self.df.loc[1:,'pos_x'].to_list()))
-        self.pos_y_n        = list(map(float,self.df.loc[1:,'pos_y'].to_list()))
-        self.pos_z_n        = list(map(float,self.df.loc[1:,'pos_z'].to_list()))
-        #self.image_fname_n  = self.df.loc[1:,'image_fname']
-        self.image_fname_n  = self.df.loc[1:,'image_fname'].to_list()
-        self.Steering_ang = list(map(float,self.df.loc[1:,'steering_angle'].to_list()))
-        self.throttle_n=list(map(float,self.df.loc[1:,'throttle'].to_list()))
-        self.brake_n=list(map(float,self.df.loc[1:,'brake'].to_list()))
-        print(len(self.image_fname_n))
-
-        
+        self.df = pd.read_csv(self.csv_fname, header=0, index_col=False) #names=self.csv_header, index_col=False)
+        print(self.df.columns)
 
         ############################################
         # show statistics
@@ -104,14 +67,7 @@ class DriveData:
             fig, (ax1, ax2) = plt.subplots(1, 2)
             #fig.suptitle('Data Normalization')
             
-            self.Steering_ang = list(map(float,self.df.loc[1:,'steering_angle'].to_list()))
-            self.throttle_n=list(map(float,self.df.loc[1:,'throttle'].to_list()))
-            self.brake_n=list(map(float,self.df.loc[1:,'brake'].to_list()))
-            '''
-            print('self.Steering_ang',self.Steering_ang)
-            print(self.df.loc[ 1: ,'steering_angle'  ].shape)
-            '''
-            hist, bins = np.histogram(self.Steering_ang, bins=num_bins)
+            hist, bins = np.histogram(self.df['steering_angle'], (num_bins))
             center = (bins[:-1] + bins[1:])*0.5
             ax1.bar(center, hist, width=0.05)
             ax1.set(title = 'Original')
@@ -119,11 +75,9 @@ class DriveData:
             remove_list = []
             samples_per_bin = 200
 
-
-
             for j in range(num_bins):
                 list_ = []
-                for i in range(1,len(self.df['steering_angle'])-1):
+                for i in range(0,len(self.df['steering_angle'])):
                     if float(self.df.loc[i,'steering_angle']) >= bins[j] and float(self.df.loc[i,'steering_angle']) <= bins[j+1]:
                         list_.append(i)
                 random.shuffle(list_)
@@ -131,15 +85,15 @@ class DriveData:
                 remove_list.extend(list_)
             
             print('\r####### data normalization #########')
-            print('removed:\t', len(remove_list))
+            print('Removed: \t', len(remove_list))
             self.df.drop(self.df.index[remove_list], inplace = True)
             self.df.reset_index(inplace = True)
             self.df.drop(['index'], axis = 1, inplace = True)
-            print('remaining:\t', len(self.df))
+            print('Remaining: \t', len(self.df))
             
-            hist, _ = np.histogram(self.Steering_ang, (num_bins))
+            hist, _ = np.histogram(self.df['steering_angle'], (num_bins))
             ax2.bar(center, hist, width=0.05)
-            ax2.plot((np.min(self.Steering_ang), np.max(self.Steering_ang)), 
+            ax2.plot((np.min(self.df['steering_angle']), np.max(self.df['steering_angle'])), 
                         (samples_per_bin, samples_per_bin))  
             ax2.set(title = 'Normalized')          
 
@@ -152,31 +106,27 @@ class DriveData:
         # read out
         if (read): 
             num_data = len(self.df)
-            print("\nnum_data:\t",num_data-1)
+            print("\nnum_data:\t",num_data)
             #bar = ProgressBar()
-            bar = tqdm(range(1, num_data - 1), desc="Processing", unit="item")
-
+            bar = tqdm(range(0, num_data), desc="Processing", unit="item")
             
-            for i, _ in enumerate(bar): #(range(1,num_data-1)): # we don't have a title
-                #print("self.image_fname_n[i]",self.image_fname_n[i],i)
-                self.image_names.append(self.image_fname_n[i])
-                #print(len(self.image_names))
+            for i, _ in enumerate(bar): #(range(1,num_data-1)): 
+                self.image_names.append(self.df.loc[i]['image_fname'])
                 if Config.data_collection['brake'] is True:
-                    self.measurements.append((float(self.Steering_ang[i]),
-                                            float(self.throttle_n[i]), 
-                                            float(self.brake_n[i])))
+                    self.measurements.append((float(self.df.loc[i]['steering_angle']),
+                                            float(self.df.loc[i]['throttle']), 
+                                            float(self.df.loc[i]['brake'])))
                 else:
-                    self.measurements.append((float(self.Steering_ang[i]),
-                                            float(self.throttle_n[i]), 
-                                            0.0)) # dummy value for old data
-                self.time_stamps.append(float(self.linux_time_n[i]))
-                self.velocities.append(float(self.vel_n[i]))
-                self.velocities_xyz.append((float(self.vel_x_n[i]), 
-                                            float(self.vel_y_n[i]), 
-                                            float(self.vel_z_n[i])))
-                self.positions_xyz.append((float(self.pos_x_n[i]), 
-                                            float(self.pos_y_n[i]), 
-                                            float(self.pos_z_n[i])))
+                    self.measurements.append((float(self.df.loc[i]['steering_angle']),
+                                            float(self.df.loc[i]['throttle'])))
+                self.time_stamps.append(float(self.df.loc[i]['time']))
+                self.velocities.append(float(self.df.loc[i]['vel']))
+                self.velocities_xyz.append((float(self.df.loc[i]['vel_x']), 
+                                            float(self.df.loc[i]['vel_y']), 
+                                            float(self.df.loc[i]['vel_z'])))
+                self.positions_xyz.append((float(self.df.loc[i]['pos_x']), 
+                                           float(self.df.loc[i]['pos_y']), 
+                                           float(self.df.loc[i]['pos_z'])))
             
             bar.close()
 
