@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Feb 17 12:23:14 2021
+
 History:
+11/13/2023: modified for AGRIBOT
 02/17/2021: modified for OSCAR 
+
 @author: jaerock
 """
 

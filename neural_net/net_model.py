@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep 23 13:23:14 2017
+
 History:
+11/13/2023: modified for AGRIBOT
 11/28/2020: modified for OSCAR 
 
 @author: jaerock
-@author: ninad#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 
 from keras.models import Sequential, Model
