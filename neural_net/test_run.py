@@ -38,11 +38,8 @@ def main(model_path, input):
     ax1.imshow(image)
     ax1.set(title = 'Original image')
 
-    # if collected data is not cropped then crop here
-    # otherwise do not crop.
-    if Config.data_collection['crop'] is not True:
-        image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                      Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+    image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
+                    Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
 
     image = cv2.resize(image, 
                         (Config.neural_net['input_image_width'],

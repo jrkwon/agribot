@@ -212,11 +212,8 @@ class DriveLog:
             image = cv2.imread(image_fname)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-            # if collected data is not cropped then crop here
-            # otherwise do not crop.
-            if Config.data_collection['crop'] is not True:
-                image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                            Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+            image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
+                        Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
 
             image = cv2.resize(image, (Config.neural_net['input_image_width'],
                                     Config.neural_net['input_image_height']))

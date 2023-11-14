@@ -100,19 +100,11 @@ class DataCollection():
     def recorder_cb(self, data):
         img = self.img_cvt.imgmsg_to_opencv(data)
 
-        # no more cropping in data collection - new strategy    
-        # # crop
-        if config['crop'] is True: # this is for old datasets
-            cropped = img[config['image_crop_y1']:config['image_crop_y2'],
-                          config['image_crop_x1']:config['image_crop_x2']]
-
         unix_time = time.time()
         time_stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f")
         file_full_path = str(self.path) + str(time_stamp) + const.IMAGE_EXT
-        if config['crop'] is True:
-            cv2.imwrite(file_full_path, cropped)
-        else:
-            cv2.imwrite(file_full_path, img)
+
+        cv2.imwrite(file_full_path, img)
         sys.stdout.write(file_full_path + '\r')
 
         line = "{}{},{},{},{},{},{},{},{},{},{},{},{}\r\n".format(time_stamp, const.IMAGE_EXT, 
