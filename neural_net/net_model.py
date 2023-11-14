@@ -43,11 +43,11 @@ def model_agribot():
         Conv2D(filters=256, kernel_size=3, activation='relu', name=const.LAST_CONV_LAYER),
         MaxPooling2D(pool_size=2),
         Flatten(),
-        Dense(1024),
+        Dense(1024, activation='relu'),
         #Dropout(0.5),
-        Dense(128),
+        Dense(128, activation='relu'),
         #Dropout(0.5),
-        Dense(12),
+        Dense(12, activation='relu'),
         #Dropout(0.5),
         Dense(config['num_outputs'])])
 
