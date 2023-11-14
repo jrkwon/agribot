@@ -49,7 +49,13 @@ source setup.bash
 
 The default data location is `agribot/e2e-dataset/<data-id>`. If `jaerock` collected a data at 5:50:10 PM, Nov 12, 2023, then the directory name of the dataset is `agribot/e2e-dataset/jaerock/2023-11-12-17-50-10`.
 
-TBA
+The data directory has a lot of images in most cases. So, it can be slow when you open the directory. Users need to open a `CSV` file inside the directory in many cases. Here is a script that can make a symblic link to the `agribot/e2e-dataset/<data-id>`.
+
+```bash
+cd path/to/agribot
+
+sh make_simlink.sh path/to/data-dir
+```
 
 
 ## How to Train
@@ -63,7 +69,7 @@ Note:
 Here is an example:
 ```bash
 conda activate agribots
-cd <path-to-agribot>
+cd path/to/agribot
 
 source setup.bash
 python neural_net/train.py e2e-dataset/<id>/yyy-mm-dd-hh-mm-ss
@@ -90,9 +96,48 @@ conda activate agribots
 cd path/to/agribot
 
 source setup.bash
-python neural_net/test_drive.py e2e-dataset/jaerock/2023-10-31-14-56-16_scout-jaerock-orchard--aug_n3_2023-11-12-16-25-31-079.keras e2e-dataset/jaerock/2023-10-31-14-56-16
+python neural_net/test_drive.py path/to/model path/to/data-dir
 ```
 
+## How to Test Single Prediction
+
+```bash
+conda activate agribots
+cd path/to/agribot
+
+source setup.bash
+python neural_net/test_run.py path/to/model path/to/image
+```
+
+## How to Visualize Heatmap
+
+```bash
+conda activate agribots
+cd path/to/agribot
+
+source setup.bash
+python neural_net/visualize_heatmap.py path/to/model path/to/image
+```
+
+## How to Generate Images and Movie Showing Control Signals
+
+- Generate images showing control signals.
+    ```bash
+    conda activate agribots
+    cd path/to/agribot
+
+    source setup.bash
+    python neural_net/view_drive.py path/to/model path/to/images
+    ```
+    The images will be generated under `path/to/images/data-dir-name`
+
+- Generate mp4 using the generated images.
+    ```bash
+    cd path/to/agribot
+
+    sh make_video.sh path/to/images/data-dir-name
+    ```
+    Caution: Do not include `'/'` at the last of the directory name.
 
 
 ## Acknowledgments
