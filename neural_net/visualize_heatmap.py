@@ -14,7 +14,13 @@ import sys
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import cv2
-from vis.visualization import visualize_cam, overlay
+#from vis.visualization import visualize_cam, overlay
+from tensorflow.keras.models import Model
+from tf_keras_vis.activation_maximization import ActivationMaximization
+from tf_keras_vis.utils.callbacks import GifGenerator
+from tf_keras_vis.utils import normalize
+
+import numpy as np
 
 from drive_run import DriveRun
 from config import Config
@@ -28,6 +34,7 @@ def main(model_path, image_file_path):
     image_process = ImageProcess()
 
     image = cv2.imread(image_file_path)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
                     Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
@@ -42,12 +49,20 @@ def main(model_path, image_file_path):
 
     plt.figure()
     plt.title('Steering Angle Prediction: ' + str(measurement[0][0]))
-    heatmap = visualize_cam(drive_run.net_model.model, layer_name=const.LAST_CONV_LAYER, 
-                filter_indices=None, seed_input=image) #, backprop_modifier='guided')
-    heatmap = overlay(heatmap, image)
+
+    layer_name=const.LAST_CONV_LAYER
+    sub_model = Model(inputs=drive_run.net_model.model.input, 
+                      outputs=drive_run.net_model.model.get_layer(layer_name).output)
+
+    # Define the activation maximization object
+    activation_maximization = ActivationMaximization(sub_model, model_modifier=None)
+
+    # Generate activation maximization heatmap
+    activation = activation_maximization(normalize, seed_input=image)
 
     plt.imshow(image)
-    plt.imshow(heatmap) #, cmap='jet', alpha=0.5)
+    plt.imshow(activation[0, :, :, 0], cmap='hot', alpha=0.5) #'viridis')
+    #plt.imshow(activation, cmap='jet', alpha=0.5)
 
     # file name
     loc_slash = image_file_path.rfind('/')

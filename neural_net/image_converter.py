@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep 23 13:23:14 2017
+
 History:
+11/14/2023: modified for AGRIBOT
 11/28/2020: modified for OSCAR 
 
 @author: jaerock
@@ -17,14 +19,14 @@ class ImageConverter:
 
     def opencv_to_imgmsg(self, cv_img):
         try:
-            img_msg = self.bridge.cv2_to_imgmsg(cv_img, 'bgr8')
+            img_msg = self.bridge.cv2_to_imgmsg(cv_img, 'rgb8')
             return img_msg
         except CvBridgeError as err:
             return err
 
     def imgmsg_to_opencv(self, img_msg):
         try:
-            cv_img = self.bridge.imgmsg_to_cv2(img_msg, 'bgr8')
+            cv_img = self.bridge.imgmsg_to_cv2(img_msg, 'rgb8')
             return cv_img
         except CvBridgeError as err:
             return err
