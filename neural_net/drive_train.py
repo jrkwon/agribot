@@ -170,6 +170,7 @@ class DriveTrain:
                 image_path = self.data_path + '/' + image_name
                 #print('image_path',image_path)
                 image = cv2.imread(image_path)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
                                 Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
@@ -221,6 +222,7 @@ class DriveTrain:
                     image_name = batch_samples[i][0][j]
                     image_path = self.data_path + '/' + image_name
                     image = cv2.imread(image_path)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                     # if collected data is not cropped then crop here
                     # otherwise do not crop.
