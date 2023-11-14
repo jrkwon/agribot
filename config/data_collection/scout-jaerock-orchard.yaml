@@ -22,7 +22,7 @@ vehicle_name: scout
 # camera image topic 
 camera_image_topic: /camera/color/image_raw
 # vehicle control topic name
-vehicle_control_topic: /joy_teleop/joy
+vehicle_control_topic: /scout #/joy_teleop/joy
 # p3d - current position and velocity
 base_pose_topic: /scout_velocity_controller/odom
 
