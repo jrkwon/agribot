@@ -1,8 +1,12 @@
 # AgriBot: Intelligent Agricultural Robot 
 
+[![demo-image](e2e-dataset/jaerock/2023-10-31-14-56-16_scout-jaerock-orchard_n3_2023-11-14-01-07-43-650_view/2023-10-31-14-56-16/2023-10-31-14-57-53-788068_-0.22_-19.61.jpg))](https://youtu.be/hPp8q_WmuDs)]
+
 ## History
 
-* 11/12/2023: Add `test_drive.py` replacig a direct use of `drive_log.py`
+* 11/14/2023: Add several How-To's
+* 11/14/2023: Add `view_drive.py` avoiding a direct use of `drive_view.py`
+* 11/12/2023: Add `test_drive.py` replacing a direct use of `drive_log.py`
 * 11/11/2023: Test in the latest TensorFlow
 * 11/11/2023: Change model format to Keras
 * 11/11/2023: Clean up
