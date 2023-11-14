@@ -30,9 +30,7 @@ from sensor_msgs.msg import Joy
 
 config = Config.data_collection
 if config['vehicle_name'] == 'scout':
-    from fusion.msg import Control
-elif config['vehicle_name'] == 'rover':
-    from rover.msg import Control
+    from scout_msgs.msg import ScoutControl
 else:
     exit(config['vehicle_name'] + ' not supported vehicle.')
 
@@ -75,14 +73,9 @@ class DataCollection():
 
 
     def steering_throttle_cb(self, value):
-        '''
         self.throttle = value.throttle
         self.steering = value.steer
         self.brake = value.brake
-        '''
-        self.throttle = value.axes[1]
-        self.steering = value.axes[0]
-        #self.brake = value.axes
 
 
     def pos_vel_cb(self, value):
@@ -131,7 +124,8 @@ def main():
     print(config['camera_image_topic'])
 
     rospy.init_node('data_collection')
-    rospy.Subscriber(config['vehicle_control_topic'], Joy, dc.steering_throttle_cb)
+    #rospy.Subscriber(config['vehicle_control_topic'], Joy, dc.steering_throttle_cb)
+    rospy.Subscriber(config['vehicle_control_topic'], ScoutControl, dc.steering_throttle_cb)
     rospy.Subscriber(config['base_pose_topic'], Odometry, dc.pos_vel_cb)
     rospy.Subscriber(config['camera_image_topic'], Image, dc.recorder_cb)
 

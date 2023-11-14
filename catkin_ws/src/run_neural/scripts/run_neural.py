@@ -29,10 +29,7 @@ from image_process import ImageProcess
 import gpu_options
 
 if Config.data_collection['vehicle_name'] == 'scout':
-    from fusion.msg import Control
-elif Config.data_collection['vehicle_name'] == 'rover':
-    from geometry_msgs.msg import Twist
-    from rover.msg import Control
+    from scout_msgs.msg import ScoutControl
 else:
     exit(Config.data_collection['vehicle_name'] + 'not supported vehicle.')
 
@@ -103,11 +100,11 @@ def main(weight_file_name, weight_file_name2 = None):
     
     rospy.Subscriber(Config.data_collection['base_pose_topic'], Odometry, pos_vel_cb)
     # ready for /bolt topic publisher
-    joy_pub = rospy.Publisher(Config.data_collection['vehicle_control_topic'], Control, queue_size = 10)
-    joy_data = Control()
+    joy_pub = rospy.Publisher(Config.data_collection['vehicle_control_topic'], ScoutControl, queue_size = 10)
+    joy_data = ScoutControl()
 
-    if Config.data_collection['vehicle_name'] == 'rover':
-        joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
+    #if Config.data_collection['vehicle_name'] == 'rover':
+    #    joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
 
     print('\nStart running. Vroom. Vroom. Vroooooom......')
     print('steer \tthrt: \tbrake \tvelocity')
