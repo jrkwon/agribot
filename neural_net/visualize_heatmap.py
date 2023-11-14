@@ -61,7 +61,7 @@ def main(model_path, image_file_path):
     activation = activation_maximization(normalize, seed_input=image)
 
     plt.imshow(image)
-    plt.imshow(activation[0, :, :, 0], cmap='hot', alpha=0.5) #'viridis')
+    plt.imshow(activation[0, :, :, 0], cmap='jet', alpha=0.5) #'viridis')
     #plt.imshow(activation, cmap='jet', alpha=0.5)
 
     # file name
@@ -80,7 +80,7 @@ def main(model_path, image_file_path):
     print('Saved ' + heatmap_file_path +' & .pdf')
 
     # show the plot 
-    #plt.show()
+    plt.show()
 
 ###############################################################################
 #       
