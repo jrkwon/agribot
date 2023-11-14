@@ -5,7 +5,6 @@ e2e-dataset/
 ###############
 # rtabmap database
 *.db
-*.jpg
 *.mp4
 *.h5
 *.json
