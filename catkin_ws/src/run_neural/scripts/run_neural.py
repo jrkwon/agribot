@@ -26,6 +26,7 @@ from image_converter import ImageConverter
 from config import Config
 from image_process import ImageProcess
 #import gpu_options
+from drive_run import DriveRun
 
 if Config.data_collection['vehicle_name'] == 'scout':
     from scout_msgs.msg import ScoutControl
@@ -47,7 +48,6 @@ class NeuralControl:
             self.image_process = ImageProcess()
             self.rate = rospy.Rate(30)
 
-            from drive_run import DriveRun
             self.drive= DriveRun(weight_file_name)
             if weight_file_name2 != None:
                 self.drive2 = DriveRun(weight_file_name2) # multiple network models can be used
