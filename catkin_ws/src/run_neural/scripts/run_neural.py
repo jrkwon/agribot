@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep 23 13:23:14 2017
@@ -23,10 +23,9 @@ import os
 
 import const
 from image_converter import ImageConverter
-from drive_run import DriveRun
 from config import Config
 from image_process import ImageProcess
-import gpu_options
+#import gpu_options
 
 if Config.data_collection['vehicle_name'] == 'scout':
     from scout_msgs.msg import ScoutControl
@@ -40,20 +39,28 @@ velocity = 0
 
 class NeuralControl:
     def __init__(self, weight_file_name, weight_file_name2 = None):
-        rospy.init_node('run_neural')
-        self.ic = ImageConverter()
-        self.image_process = ImageProcess()
-        self.rate = rospy.Rate(30)
-        self.drive= DriveRun(weight_file_name)
-        if weight_file_name2 != None:
-            self.drive2 = DriveRun(weight_file_name2) # multiple network models can be used
-        else:
-            self.drive2 = None
-        rospy.Subscriber(Config.data_collection['camera_image_topic'], Image, self._controller_cb)
-        self.image = None
-        self.image_processed = False
-        #self.config = Config()
-        self.braking = False
+        try:
+            rospy.init_node('run_neural', log_level=rospy.DEBUG)
+            # ... rest of your code ...
+
+            self.ic = ImageConverter()
+            self.image_process = ImageProcess()
+            self.rate = rospy.Rate(30)
+
+            from drive_run import DriveRun
+            self.drive= DriveRun(weight_file_name)
+            if weight_file_name2 != None:
+                self.drive2 = DriveRun(weight_file_name2) # multiple network models can be used
+            else:
+                self.drive2 = None
+            rospy.Subscriber(Config.data_collection['camera_image_topic'], Image, self._controller_cb)
+            self.image = None
+            self.image_processed = False
+            #self.config = Config()
+            self.braking = False
+
+        except Exception as e:
+            print("Exception during initialization: ", e)
 
     def _controller_cb(self, image): 
         img = self.ic.imgmsg_to_opencv(image)
