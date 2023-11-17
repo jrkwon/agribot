@@ -39,13 +39,26 @@ conda env create --file config/conda/environment.yaml
 
 ## How to Use
 
-Activate the `agribot` environment.
+Start a simulation environment in `agribot_ros`. 
+```bash
+./start_simul.sh world-name
 ```
+
+The name should be without the `.world` file extension. 
+
+If `scout_orchard_world` is the world name that you would like to use, do this.
+```bash
+./start_simul.sh scout_orchard_world
+```
+
+Then, open another terminal. 
+Activate the `agribot` environment.
+```bash
 conda activate agribot
 ```
 
 Then `source` the `setup.bash`. You must be at the `agribot` directory when you do this.
-```
+```bash
 source setup.bash
 ```
 
