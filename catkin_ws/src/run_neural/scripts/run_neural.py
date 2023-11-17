@@ -44,6 +44,8 @@ class NeuralControl:
             rospy.init_node('run_neural', log_level=rospy.DEBUG)
             # ... rest of your code ...
 
+            self.image_processed = False
+
             self.ic = ImageConverter()
             self.image_process = ImageProcess()
             self.rate = rospy.Rate(30)
@@ -55,7 +57,6 @@ class NeuralControl:
                 self.drive2 = None
             rospy.Subscriber(Config.data_collection['camera_image_topic'], Image, self._controller_cb)
             self.image = None
-            self.image_processed = False
             #self.config = Config()
             self.braking = False
 
