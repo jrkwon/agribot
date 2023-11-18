@@ -41,12 +41,12 @@ conda env create --file config/conda/environment.yaml
 
 Start a simulation environment in `agribot_ros`. 
 ```bash
-./start_simul.sh world-name
+./start_simul.sh launch_filename(without .launch)
 ```
 
-The name should be without the `.world` file extension. 
+The name should be without the `.laumch` file extension. 
 
-If `scout_orchard_world` is the world name that you would like to use, do this.
+If `scout_orchard_world` is the launch file name (without the .launch extension)that you would like to use, do this.
 ```bash
 ./start_simul.sh scout_orchard_world
 ```
