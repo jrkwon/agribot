@@ -115,7 +115,7 @@ def main(weight_file_name, weight_file_name2 = None):
     #    joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
 
     print('\nStart running. Vroom. Vroom. Vroooooom......')
-    print('steer \tthrt: \tbrake \tvelocity')
+    print('steering \tthrottle: \tbrake \tvelocity')
 
     use_predicted_throttle = True if config['num_outputs'] == 2 else False
     while not rospy.is_shutdown():
@@ -130,20 +130,20 @@ def main(weight_file_name, weight_file_name2 = None):
                 prediction2 = neural_control.drive2.run((neural_control.image, velocity))
             if config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
                 joy_data.throttle = prediction[0][1]
             else: # num_outputs is 1
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
         else: # num_inputs is 1
             prediction = neural_control.drive.run((neural_control.image, ))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, ))
             if config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
                 joy_data.throttle = prediction[0][1]
             else: # num_outputs is 1
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
             
         #############################
         ## very very simple controller
