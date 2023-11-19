@@ -166,22 +166,8 @@ def main(weight_file_name, weight_file_name2 = None):
                 if use_predicted_throttle is False:
                     joy_data.throttle = Config.run_neural['throttle_default']
                 joy_data.brake = 0
-
         
-        ##############################    
-        ## publish mavros control topic
         joy_pub.publish(joy_data)
-        if Config.data_collection['vehicle_name'] == 'rover':
-            joy_data4mavros = Twist()
-            if neural_control.braking is True:
-                joy_data4mavros.linear.x = 0
-                joy_data4mavros.linear.y = 0
-            else: 
-                joy_data4mavros.linear.x = joy_data.throttle*Config.run_neural['scale_factor_throttle']
-                joy_data4mavros.linear.y = joy_data.steer*Config.run_neural['scale_factor_steering']
-
-            joy_pub4mavros.publish(joy_data4mavros)
-
 
         ## print out
         cur_output = '{0:.3f} \t{1:.3f} \t{2:.3f} \t{3:.3f}\r'.format(joy_data.steer, 
