@@ -19,10 +19,17 @@ steering_angle_tolerance: 0.015 # around 7.5 degree
 
 # vehicle name
 vehicle_name: scout
+
 # camera image topic 
 camera_image_topic: /camera/color/image_raw
+
 # vehicle control topic name
 vehicle_control_topic: /scout #/joy_teleop/joy
+# joystick topic name
+joystick_topic: /joy_teleop/joy
+## scout control name: joystick abstraction
+#scout_control: scout_control
+
 # p3d - current position and velocity
 base_pose_topic: /scout_velocity_controller/odom
 
