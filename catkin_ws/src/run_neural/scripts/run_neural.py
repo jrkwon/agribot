@@ -44,6 +44,8 @@ class NeuralControl:
             rospy.init_node('run_neural', log_level=rospy.DEBUG)
             # ... rest of your code ...
 
+            self.image_processed = False
+
             self.ic = ImageConverter()
             self.image_process = ImageProcess()
             self.rate = rospy.Rate(30)
@@ -55,7 +57,6 @@ class NeuralControl:
                 self.drive2 = None
             rospy.Subscriber(Config.data_collection['camera_image_topic'], Image, self._controller_cb)
             self.image = None
-            self.image_processed = False
             #self.config = Config()
             self.braking = False
 
@@ -114,7 +115,7 @@ def main(weight_file_name, weight_file_name2 = None):
     #    joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
 
     print('\nStart running. Vroom. Vroom. Vroooooom......')
-    print('steer \tthrt: \tbrake \tvelocity')
+    print('steering \tthrottle: \tbrake \tvelocity')
 
     use_predicted_throttle = True if config['num_outputs'] == 2 else False
     while not rospy.is_shutdown():
@@ -129,20 +130,20 @@ def main(weight_file_name, weight_file_name2 = None):
                 prediction2 = neural_control.drive2.run((neural_control.image, velocity))
             if config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
                 joy_data.throttle = prediction[0][1]
             else: # num_outputs is 1
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
         else: # num_inputs is 1
             prediction = neural_control.drive.run((neural_control.image, ))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, ))
             if config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
                 joy_data.throttle = prediction[0][1]
             else: # num_outputs is 1
-                joy_data.steer = prediction[0][0]
+                joy_data.steering = prediction[0][0]
             
         #############################
         ## very very simple controller
@@ -165,22 +166,8 @@ def main(weight_file_name, weight_file_name2 = None):
                 if use_predicted_throttle is False:
                     joy_data.throttle = Config.run_neural['throttle_default']
                 joy_data.brake = 0
-
         
-        ##############################    
-        ## publish mavros control topic
         joy_pub.publish(joy_data)
-        if Config.data_collection['vehicle_name'] == 'rover':
-            joy_data4mavros = Twist()
-            if neural_control.braking is True:
-                joy_data4mavros.linear.x = 0
-                joy_data4mavros.linear.y = 0
-            else: 
-                joy_data4mavros.linear.x = joy_data.throttle*Config.run_neural['scale_factor_throttle']
-                joy_data4mavros.linear.y = joy_data.steer*Config.run_neural['scale_factor_steering']
-
-            joy_pub4mavros.publish(joy_data4mavros)
-
 
         ## print out
         cur_output = '{0:.3f} \t{1:.3f} \t{2:.3f} \t{3:.3f}\r'.format(joy_data.steer, 
