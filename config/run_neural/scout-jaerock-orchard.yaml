@@ -3,6 +3,10 @@
 
 version: 1.00
 
+# -------------------------
+# joy cmd_vel
+cmd_vel_topic: /joy_teleop/cmd_vel
+
 ######################################################
 ## driving strategy - run_neural.py
 

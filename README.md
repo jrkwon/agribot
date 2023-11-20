@@ -3,6 +3,7 @@
 
 ## History
 
+* 11/16/2023: Start Noetic version
 * 11/14/2023: Add several How-To's
 * 11/14/2023: Add `view_drive.py` avoiding a direct use of `drive_view.py`
 * 11/12/2023: Add `test_drive.py` replacing a direct use of `drive_log.py`
@@ -38,19 +39,49 @@ conda env create --file config/conda/environment.yaml
 
 ## How to Use
 
-Activate the `agribot` environment.
+Start a simulation environment in `agribot_ros`. 
+```bash
+./start_simul.sh launch_filename(without .launch)
 ```
+
+The name should be without the `.laumch` file extension. 
+
+If `scout_orchard_world` is the launch file name (without the .launch extension)that you would like to use, do this.
+```bash
+./start_simul.sh scout_orchard_world
+```
+
+Then, open another terminal. 
+Activate the `agribot` environment.
+```bash
 conda activate agribot
 ```
 
 Then `source` the `setup.bash`. You must be at the `agribot` directory when you do this.
-```
+```bash
 source setup.bash
 ```
 
 ## How to Collect Data
 
 The default data location is `agribot/e2e-dataset/<data-id>`. If `jaerock` collected a data at 5:50:10 PM, Nov 12, 2023, then the directory name of the dataset is `agribot/e2e-dataset/jaerock/2023-11-12-17-50-10`.
+
+```bash
+cd path/to/agribot
+source setup.bash
+
+rosrun data_collection data_collection.py <data-id> 
+```
+
+If you have a separate storage to save data, you can set the `path_to_e2e_data`, which is a `rosparm`. 
+
+```bash
+cd path/to/agribot
+source setup.bash
+
+rosparam set path_to_e2e_data path/to/location/to/save  
+rosrun data_collection data_collection.py <data-id> 
+```
 
 The data directory has a lot of images in most cases. So, it can be slow when you open the directory. Users need to open a `CSV` file inside the directory in many cases. Here is a script that can make a symblic link to the `agribot/e2e-dataset/<data-id>`.
 
@@ -142,7 +173,26 @@ python neural_net/visualize_heatmap.py path/to/model path/to/image
     ```
     Caution: Do not include `'/'` at the last of the directory name.
 
+## How to Let the Trained Neural Network Drive the Robot
 
+The best practice is to 
+- Start a Gazebo simulated world without any conda environment activated.
+
+    ```bash
+    cd path/to/agribot
+    source setup.bash
+
+    ./start_simul.sh <launch name without '.launch'>
+    ```
+- Open a new terminal.
+- Activate the `agribot` conda environment
+    ```bash
+    conda activate agribot
+    ```
+- Start `run_neural`.
+    ```bash
+    rosrun run_neural run_neural.py path/to/trained/model
+    ```
 ## Acknowledgments
 
 ### System Design and Implementation
