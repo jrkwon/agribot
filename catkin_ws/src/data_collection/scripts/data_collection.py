@@ -54,7 +54,7 @@ class DataCollection():
         name_datatime = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
         #path = '../data/' + sys.argv[1] + '/' + name_datatime + '/'
         path = rospy.get_param('path_to_e2e_data', 
-                        './e2e_dataset') + '/' + sys.argv[1] + '/' + name_datatime + '/'
+                        './e2e-dataset') + '/' + sys.argv[1] + '/' + name_datatime + '/'
         if os.path.exists(path):
             print('path exists. continuing...')
         else:
