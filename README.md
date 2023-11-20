@@ -66,6 +66,23 @@ source setup.bash
 
 The default data location is `agribot/e2e-dataset/<data-id>`. If `jaerock` collected a data at 5:50:10 PM, Nov 12, 2023, then the directory name of the dataset is `agribot/e2e-dataset/jaerock/2023-11-12-17-50-10`.
 
+```bash
+cd path/to/agribot
+source setup.bash
+
+rosrun data_collection data_collection.py <data-id> 
+```
+
+If you have a separate storage to save data, you can set the `path_to_e2e_data`, which is a `rosparm`. 
+
+```bash
+cd path/to/agribot
+source setup.bash
+
+rosparam set path_to_e2e_data path/to/location/to/save  
+rosrun data_collection data_collection.py <data-id> 
+```
+
 The data directory has a lot of images in most cases. So, it can be slow when you open the directory. Users need to open a `CSV` file inside the directory in many cases. Here is a script that can make a symblic link to the `agribot/e2e-dataset/<data-id>`.
 
 ```bash
@@ -156,7 +173,26 @@ python neural_net/visualize_heatmap.py path/to/model path/to/image
     ```
     Caution: Do not include `'/'` at the last of the directory name.
 
+## How to Let the Trained Neural Network Drive the Robot
 
+The best practice is to 
+- Start a Gazebo simulated world without any conda environment activated.
+
+    ```bash
+    cd path/to/agribot
+    source setup.bash
+
+    ./start_simul.sh <launch name without '.launch'>
+    ```
+- Open a new terminal.
+- Activate the `agribot` conda environment
+    ```bash
+    conda activate agribot
+    ```
+- Start `run_neural`.
+    ```bash
+    rosrun run_neural run_neural.py path/to/trained/model
+    ```
 ## Acknowledgments
 
 ### System Design and Implementation
