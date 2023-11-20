@@ -56,9 +56,9 @@ class DataCollection():
         path = rospy.get_param('path_to_e2e_data', 
                         './e2e-dataset') + '/' + sys.argv[1] + '/' + name_datatime + '/'
         if os.path.exists(path):
-            print('path exists. continuing...')
+            print('The path exists. continuing...')
         else:
-            print('new folder created: ' + path)
+            print('A new folder created: ' + path)
             os.makedirs(path)
 
         self.text = open(str(path) + name_datatime + const.DATA_EXT, "w+")
