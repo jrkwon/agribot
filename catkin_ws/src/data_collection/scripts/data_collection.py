@@ -84,10 +84,13 @@ class DataCollection():
         self.pos_z = value.pose.pose.position.z
 
         self.vel_x = value.twist.twist.linear.x 
-        #self.vel_y = value.twist.twist.linear.y
-        self.vel_y = value.twist.twist.angular.z
+        self.vel_y = value.twist.twist.linear.y
         self.vel_z = value.twist.twist.linear.z
         self.vel = self.calc_velocity(self.vel_x, self.vel_y, self.vel_z)
+
+        self.ang_vel_x = value.twist.twist.angular.x 
+        self.ang_vel_y = value.twist.twist.angular.y
+        self.ang_vel_z = value.twist.twist.angular.z
 
 
     def recorder_cb(self, data):
@@ -100,7 +103,7 @@ class DataCollection():
         cv2.imwrite(file_full_path, img)
         sys.stdout.write(file_full_path + '\r')
 
-        line = "{}{},{:.4f},{:.4f},{:.4f},{},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}\r\n".format(
+        line = "{}{},{:.4f},{:.4f},{:.4f},{},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}\r\n".format(
                                                 time_stamp, const.IMAGE_EXT, 
                                                 self.steering, 
                                                 self.throttle,
@@ -110,6 +113,9 @@ class DataCollection():
                                                 self.vel_x,
                                                 self.vel_y,
                                                 self.vel_z,
+                                                self.ang_vel_x,
+                                                self.ang_vel_y,
+                                                self.ang_vel_z,
                                                 self.pos_x,
                                                 self.pos_y,
                                                 self.pos_z)
