@@ -74,7 +74,7 @@ class DataCollection():
 
     def steering_throttle_cb(self, value):
         self.throttle = value.throttle
-        self.steering = value.steer
+        self.steering = value.steering
         self.brake = value.brake
 
 
