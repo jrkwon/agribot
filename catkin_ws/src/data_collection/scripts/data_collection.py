@@ -41,8 +41,9 @@ class DataCollection():
         self.throttle = 0
         self.brake = 0
 
-        self.vel_x = self.vel_y = self.vel_z = 0
         self.vel = 0
+        self.vel_x = self.vel_y = self.vel_z = 0
+        self.ang_vel_x = self.ang_vel_y = self.ang_vel_z = 0
         self.pos_x = self.pos_y = self.pos_z = 0
 
         self.img_cvt = ic.ImageConverter()
