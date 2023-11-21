@@ -96,12 +96,13 @@ class DataCollection():
 
     def recorder_cb(self, data):
         img = self.img_cvt.imgmsg_to_opencv(data)
+        rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         unix_time = time.time()
         time_stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f")
         file_full_path = str(self.path) + str(time_stamp) + const.IMAGE_EXT
 
-        cv2.imwrite(file_full_path, img)
+        cv2.imwrite(file_full_path, rgb_image)
         sys.stdout.write(file_full_path + '\r')
 
         line = "{}{},{:.4f},{:.4f},{:.4f},{},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}\r\n".format(
