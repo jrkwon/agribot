@@ -100,18 +100,19 @@ class DataCollection():
         cv2.imwrite(file_full_path, img)
         sys.stdout.write(file_full_path + '\r')
 
-        line = "{}{},{},{},{},{},{},{},{},{},{},{},{}\r\n".format(time_stamp, const.IMAGE_EXT, 
-                                                    self.steering, 
-                                                    self.throttle,
-                                                    self.brake,
-                                                    unix_time,
-                                                    self.vel,
-                                                    self.vel_x,
-                                                    self.vel_y,
-                                                    self.vel_z,
-                                                    self.pos_x,
-                                                    self.pos_y,
-                                                    self.pos_z)
+        line = "{}{},{:.4f},{:.4f},{:.4f},{},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}\r\n".format(
+                                                time_stamp, const.IMAGE_EXT, 
+                                                self.steering, 
+                                                self.throttle,
+                                                self.brake,
+                                                unix_time,
+                                                self.vel,
+                                                self.vel_x,
+                                                self.vel_y,
+                                                self.vel_z,
+                                                self.pos_x,
+                                                self.pos_y,
+                                                self.pos_z)
 
         self.text.write(line)                                                 
 
