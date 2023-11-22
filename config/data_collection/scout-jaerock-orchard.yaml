@@ -31,7 +31,8 @@ joystick_topic: /joy_teleop/joy
 #scout_control: scout_control
 
 # p3d - current position and velocity
-base_pose_topic: /scout_velocity_controller/odom
+base_pose_topic: /base_pose_ground_truth # using fake_localization
+#/scout_velocity_controller/odom  
 
 ######################################################
 ## when training and running, cropping input image 

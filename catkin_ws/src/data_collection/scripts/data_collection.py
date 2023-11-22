@@ -128,9 +128,11 @@ class DataCollection():
 def main():
     dc = DataCollection()
 
-    print(config['vehicle_control_topic'])
-    print(config['base_pose_topic'])
-    print(config['camera_image_topic'])
+    print(':::::::::: Data Collection Topics ::::::::::')
+    print(f"vehicle control: {config['vehicle_control_topic']}")
+    print(f"base pose:       {config['base_pose_topic']}")
+    print(f"camera image:    {config['camera_image_topic']}")
+    print('--------------------------------------------')
 
     rospy.init_node('data_collection')
     #rospy.Subscriber(config['vehicle_control_topic'], Joy, dc.steering_throttle_cb)
