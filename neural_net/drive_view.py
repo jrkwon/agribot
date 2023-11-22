@@ -34,9 +34,9 @@ class ImageSettings:
         input_image_size = (Config.data_collection['image_width'], 
                             Config.data_collection['image_height'])
 
-        margin_x = 50
+        margin_x = 40
         margin_y = 50
-        spacer_x = 50
+        spacer_x = 60
 
         # class settings
         self.image = Image.open(full_image_name)
