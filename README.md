@@ -1,8 +1,14 @@
 # AgriBot: Intelligent Agricultural Robot 
 [![demo-image](img4doc/2023-10-31-14-57-53-788068_-0.22_-19.61.jpg)](https://youtu.be/hPp8q_WmuDs?si=SRECyqMIKQlg1TZV)
 
+## To Do
+
+* Check if `scan` or `realsense/scan` for a real robot and simulated?
+
 ## History
 
+* 11/22/2023: Add `gen_pose` option for `fake_localization`.
+* 11/22/2023: Add `p3d` and `fake_localization` for pose data
 * 11/20/2023: Merge the `noetic-devel` branch to `master`
 * 11/20/2023: Add `scout_control_translator`
 * 11/19/2023: Add `joystick_translator`
@@ -42,16 +48,16 @@ conda env create --file config/conda/environment.yaml
 
 ## How to Use
 
-Start a simulation environment in `agribot_ros`. 
+Start the `gazebo` simulation environment in `agribot_ros` with `true` for `gen_pose`. The `gen_pose` is for generating _fake_ localization information. When the `gazebo` is being used for `SLAM`, `gen_pose` must be false (default).
 ```bash
-./start_simul.sh launch_filename(without .launch)
+./start_simul.sh launch_filename(without .launch) gen_pose:=true
 ```
 
-The name should be without the `.laumch` file extension. 
+The name should be without the `.launch` file extension. 
 
 If `scout_orchard_world` is the launch file name (without the .launch extension)that you would like to use, do this.
 ```bash
-./start_simul.sh scout_orchard_world
+./start_simul.sh scout_orchard_world gen_pose:=true
 ```
 
 Then, open another terminal. 
