@@ -202,6 +202,32 @@ The best practice is to
     ```bash
     rosrun run_neural run_neural.py path/to/trained/model
     ```
+
+## Troubleshooting
+
+- On Ubuntu 20.04, `cv_bridge` may generate this error below.
+
+    ```bash
+    Traceback (most recent call last):
+    File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+        cb(msg)
+    File "/home/jaerock/projects/agribot/catkin_ws/src/run_neural/scripts/run_neural.py", line 67, in _controller_cb
+        img = self.ic.imgmsg_to_opencv(image)
+    File "/home/jaerock/projects/agribot/neural_net/image_converter.py", line 29, in imgmsg_to_opencv
+        cv_img = self.bridge.imgmsg_to_cv2(img_msg, 'rgb8')
+    File "/opt/ros/noetic/lib/python3/dist-packages/cv_bridge/core.py", line 163, in imgmsg_to_cv2
+        dtype, n_channels = self.encoding_to_dtype_with_channels(img_msg.encoding)
+    File "/opt/ros/noetic/lib/python3/dist-packages/cv_bridge/core.py", line 99, in encoding_to_dtype_with_channels
+        return self.cvtype2_to_dtype_with_channels(self.encoding_to_cvtype2(encoding))
+    File "/opt/ros/noetic/lib/python3/dist-packages/cv_bridge/core.py", line 91, in encoding_to_cvtype2
+        from cv_bridge.boost.cv_bridge_boost import getCvType
+    ImportError: /lib/x86_64-linux-gnu/libp11-kit.so.0: undefined symbol: ffi_type_pointer, version LIBFFI_BASE_7.0
+    ```
+- This is because `cv_bridge` is dynamically linked with `libffi.8` not `libffi.7`. Remove that library.
+    ```bash
+    rm ${CONDA_PREFIX}/lib/libffi.7.so ${CONDA_PREFIX}/lib/libffi.so.7
+    ```
+
 ## Acknowledgments
 
 ### System Design and Implementation
