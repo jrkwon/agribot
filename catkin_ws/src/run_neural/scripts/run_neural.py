@@ -170,7 +170,7 @@ def main(weight_file_name, weight_file_name2 = None):
         joy_pub.publish(joy_data)
 
         ## print out
-        cur_output = '{0:.3f} \t{1:.3f} \t{2:.3f} \t{3:.3f}\r'.format(joy_data.steer, 
+        cur_output = '{0:.3f} \t{1:.3f} \t{2:.3f} \t{3:.3f}\r'.format(joy_data.steering, 
                           joy_data.throttle, joy_data.brake, velocity)
 
         sys.stdout.write(cur_output)
