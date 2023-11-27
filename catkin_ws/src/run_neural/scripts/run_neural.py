@@ -41,7 +41,7 @@ velocity = 0
 class NeuralControl:
     def __init__(self, weight_file_name, weight_file_name2 = None):
         try:
-            rospy.init_node('run_neural', log_level=rospy.DEBUG)
+            rospy.init_node('run_neural', log_level=rospy.ERROR)
             # ... rest of your code ...
 
             self.image_processed = False
@@ -114,7 +114,9 @@ def main(weight_file_name, weight_file_name2 = None):
     #if Config.data_collection['vehicle_name'] == 'rover':
     #    joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
 
-    print('\nStart running. Vroom. Vroom. Vroooooom......')
+    print('\n------------------------------------------------')
+    print('Start running. Vroom. Vroom. Vroooooom......')
+    print('------------------------------------------------')
     print('steering \tthrottle: \tbrake \tvelocity')
 
     use_predicted_throttle = True if config['num_outputs'] == 2 else False
@@ -170,7 +172,7 @@ def main(weight_file_name, weight_file_name2 = None):
         joy_pub.publish(joy_data)
 
         ## print out
-        cur_output = '{0:.3f} \t{1:.3f} \t{2:.3f} \t{3:.3f}\r'.format(joy_data.steering, 
+        cur_output = '{0:.3f} \t\t{1:.3f} \t\t{2:.3f} \t{3:.3f}\r'.format(joy_data.steering, 
                           joy_data.throttle, joy_data.brake, velocity)
 
         sys.stdout.write(cur_output)
