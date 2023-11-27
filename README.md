@@ -40,7 +40,10 @@ To run `agribot`, you must install SDKs for sensors and additional packages, inc
 
 ## Prior to Use
 
-Create the `agribot` conda environment.
+Create the `agribot` conda environment. 
+
+**Note:**
+We tested `rospy.init_node()` of `ROS Noetic` with `Python 3.11`. Well... `init_node()` never returns. We tried `Pytnon 3.10` that works well with `rospy.init_node()`. Thus, this conda environment has `Python 3.10`.
 
 ```
 conda env create --file config/conda/environment.yaml
@@ -132,7 +135,7 @@ Let us assume followings as an example.
 Then, a trained model name is 
 `2023-10-31-14-56-16_scout-jaerock-orchard--aug_n3_2023-11-12-16-25-31-079.keras`
 
-Let us test the model with a dataset (this is ideally a test set, but you may test the trained network with your training dataset for an initial trial.
+Let us test the model with a dataset. You may test the trained network with your training dataset for an initial trial. Then, you may test it with a test data set.
 
 ```bash
 conda activate agribots
