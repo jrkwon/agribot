@@ -155,7 +155,7 @@ def main(weight_file_name, weight_file_name2 = None):
             if velocity < Config.run_neural['velocity_0']: # too slow then no braking
                 joy_data.throttle = Config.run_neural['throttle_default'] # apply default throttle
                 joy_data.brake = 0
-            elif abs(joy_data.steer) > Config.run_neural['sharp_turn_min']:
+            elif abs(joy_data.steering) > Config.run_neural['sharp_turn_min']:
                 is_sharp_turn = True
             
             if is_sharp_turn or velocity > Config.run_neural['max_vel']: 
