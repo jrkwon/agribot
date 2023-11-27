@@ -1,6 +1,6 @@
 # AgriBot: Intelligent Agricultural Robot 
 [![demo-image](img4doc/2023-10-31-14-57-53-788068_-0.22_-19.61.jpg)](https://youtu.be/hPp8q_WmuDs?si=SRECyqMIKQlg1TZV)
-
+[![demo-image2](img4doc/Screenshot%20from%202023-11-27%2016-35-59.png)](https://www.youtube.com/watch?v=VOlLl6GCoa4)
 ## To Do
 
 * Check if `scan` or `realsense/scan` for a real robot and simulated?
