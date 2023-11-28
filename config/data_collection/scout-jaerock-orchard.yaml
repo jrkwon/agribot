@@ -27,6 +27,8 @@ camera_image_topic: /camera/color/image_raw
 vehicle_control_topic: /scout_control #/joy_teleop/joy
 # joystick topic name
 joystick_topic: /joy_teleop/joy
+# telop twist node prefix
+teleop_twist_node_prefix: /joy_teleop/teleop_twist_joy/
 ## scout control name: joystick abstraction
 #scout_control: scout_control
 
