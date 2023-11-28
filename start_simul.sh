@@ -12,5 +12,5 @@ if [ $# -eq 0 ]; then
     roslaunch scout_gazebo scout_playpen.launch
 else
     echo "Starting Gazebo with $1..."  
-    roslaunch scout_gazebo $1.launch $2
+    roslaunch scout_gazebo $1.launch $2 $3 $4 $5 $6
 fi
