@@ -107,9 +107,10 @@ def main(weight_file_name, weight_file_name2 = None):
     neural_control = NeuralControl(weight_file_name, weight_file_name2)
     
     rospy.Subscriber(Config.data_collection['base_pose_topic'], Odometry, pos_vel_cb)
-    # ready for /bolt topic publisher
+    # ready for topic publisher
     joy_pub = rospy.Publisher(Config.data_collection['vehicle_control_topic'], ScoutControl, queue_size = 10)
     joy_data = ScoutControl()
+    joy_data.gearshift = ScoutControl.FORWARD
 
     #if Config.data_collection['vehicle_name'] == 'rover':
     #    joy_pub4mavros = rospy.Publisher(Config.config['mavros_cmd_vel_topic'], Twist, queue_size=20)
