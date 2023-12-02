@@ -325,14 +325,16 @@ class DriveTrain:
         
         # checkpoint
         callbacks = []
-        #weight_filename = self.data_path + '_' + Config.config_yaml_name \
-        #    + '_N' + str(config['network_type']) + '_ckpt'
-        checkpoint = ModelCheckpoint(self.model_ckpt_name + '_' + \
-                                     self.timestamp + \
-                                     '.{epoch:02d}-{val_loss:.2f}',
-                                     monitor='val_loss', 
-                                     verbose=1, save_best_only=True, mode='min')
-        callbacks.append(checkpoint)
+
+        if config['checkpoint']:
+            #weight_filename = self.data_path + '_' + Config.config_yaml_name \
+            #    + '_N' + str(config['network_type']) + '_ckpt'
+            checkpoint = ModelCheckpoint(self.model_ckpt_name + '_' + \
+                                        self.timestamp + \
+                                        '.{epoch:02d}-{val_loss:.2f}',
+                                        monitor='val_loss', 
+                                        verbose=1, save_best_only=True, mode='min')
+            callbacks.append(checkpoint)
         
         # early stopping
         patience = config['early_stopping_patience']
