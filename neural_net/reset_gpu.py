@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 
