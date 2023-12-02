@@ -2,15 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
+import sys
 
-# Assuming you have a GPU with device ID 0
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-config.gpu_options.visible_device_list = "0"  # Set the GPU device ID
-set_session(tf.Session(config=config))
+def main(gpu_id):
+    # Assuming you have a GPU with device ID 0
+    physical_devices = tf.config.list_physical_devices('GPU')
+    if len(physical_devices) > 0:
+        tf.config.experimental.set_memory_growth(physical_devices[gpu_id], True)
 
-# Your Keras code here...
+    # Your TensorFlow 2.x code here...
 
-# Reset GPU memory
-tf.keras.backend.clear_session()
+    # Reset GPU memory
+    tf.keras.backend.clear_session()
+
+if __name__ == '__main__':
+    try:
+        if (len(sys.argv) == 1):
+            exit('Usage:\n$ python {} gpu_id_num'.format(sys.argv[0]))
+
+        main(int(sys.argv[1]))
+
+    except KeyboardInterrupt:
+        print ('\nShutdown requested. Exiting...')
