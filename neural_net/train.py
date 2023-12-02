@@ -33,7 +33,7 @@ if __name__ == '__main__':
         if (len(sys.argv) == 1):
             exit('Usage:\n$ python {} data_path gpu_id_num'.format(sys.argv[0]))
 
-        gpu_id = sys.argv[2] if sys.argc == 3 else "0"
+        gpu_id = sys.argv[2] if len(sys.argv) == 3 else "0"
         train(sys.argv[1], gpu_id)
 
     except KeyboardInterrupt:
