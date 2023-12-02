@@ -20,6 +20,10 @@ import random
 
 from config import Config
 
+
+NUM_BINS = 50
+SAMPLES_PER_BIN = 500
+
 class DriveData:
 
     def __init__(self, csv_fname, timestamp):
@@ -66,7 +70,7 @@ class DriveData:
         # 'normalize' arg is for overriding 'normalize_data' config.
         if (Config.neural_net['normalize_data'] and normalize):
             print('\nNormalizing... wait for a moment...')
-            num_bins = 50
+            num_bins = NUM_BINS
             fig, (ax1, ax2) = plt.subplots(1, 2)
             #fig.suptitle('Data Normalization')
             
@@ -76,13 +80,18 @@ class DriveData:
             ax1.set(title = 'Original')
 
             remove_list = []
-            samples_per_bin = 200
+            samples_per_bin = SAMPLES_PER_BIN
 
             for j in tqdm(range(num_bins)):
                 list_ = []
                 for i in range(0,len(self.df['steering_angle'])):
-                    if float(self.df.loc[i,'steering_angle']) >= bins[j] and float(self.df.loc[i,'steering_angle']) <= bins[j+1]:
+                    steering_angle = float(self.df.loc[i,'steering_angle'])
+                    if steering_angle >= bins[j] and steering_angle < bins[j+1]:
                         list_.append(i)
+                    if j == (num_bins - 1): # last index
+                        if steering_angle == bins[j+1]:
+                            list_.append(i)
+
                 random.shuffle(list_)
                 list_ = list_[samples_per_bin:]
                 remove_list.extend(list_)
