@@ -36,4 +36,4 @@ CKPT_DIR             = 'ckpt'
 
 ######################
 # data format
-DATA_HEADER = "image_fname, steering_angle, throttle, brake, time, vel, vel_x, vel_y, vel_z, ang_vel_x, ang_vel_y, ang_vel_z, pos_x, pos_y, pos_z\n"
+DATA_HEADER = "image_fname,steering_angle,throttle,brake,time,vel,vel_x,vel_y,vel_z,ang_vel_x,ang_vel_y,ang_vel_z,pos_x,pos_y,pos_z\n"
