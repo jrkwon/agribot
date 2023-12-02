@@ -7,6 +7,7 @@
 
 ## History
 
+* 12/01/2023: Add `checkpoint` saving option. The default is `False`. 
 * 11/22/2023: Add `gen_pose` option for `fake_localization`.
 * 11/22/2023: Add `p3d` and `fake_localization` for pose data
 * 11/20/2023: Merge the `noetic-devel` branch to `master`
