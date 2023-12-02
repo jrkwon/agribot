@@ -9,6 +9,7 @@ def main(gpu_id):
     physical_devices = tf.config.list_physical_devices('GPU')
     if len(physical_devices) > 0:
         tf.config.experimental.set_memory_growth(physical_devices[gpu_id], True)
+        print(physical_devices)
 
     # Your TensorFlow 2.x code here...
 
