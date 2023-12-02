@@ -13,11 +13,11 @@ cmd_vel_topic: /joy_teleop/cmd_vel
 # max vel
 max_vel: 18
 # steering angle value for sharp turn
-sharp_turn_min: 0.2 #5
+sharp_turn_min: 0.7 
 # when sharp turn, apply brake for this sec.
-brake_apply_sec: 1.9 #7
+brake_apply_sec: 1
 # brake value
-brake_val: 0.7 #5
+brake_val: 0.7
 # throttle at non sharp turn
 throttle_default: 1
 # throttle at sharp turn
