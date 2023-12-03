@@ -116,7 +116,7 @@ class DriveLog:
         #plt.title('Historgram of Predicted Errors')
         plt.xlabel('Steering Angle')
         plt.ylabel('Number of Predictions')
-        plt.xlim(-1.0, 1.0)
+        plt.xlim(0, 1.0)
         plt.plot(np.min(self.differences), np.max(self.differences))
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_err_hist')
