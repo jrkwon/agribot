@@ -34,7 +34,8 @@ else:
     exit(Config.data_collection['vehicle_name'] + 'not supported vehicle.')
 
 
-config = Config.neural_net
+dc_config = Config.data_collection
+rn_config = Config.run_neural
 velocity = 0
 
 
@@ -43,6 +44,13 @@ class NeuralControl:
         try:
             rospy.init_node('run_neural', log_level=rospy.ERROR)
             # ... rest of your code ...
+
+            # -------------------------------------------------------------------
+            # teleop_twist_joy scaling
+            # default values from teleop_logitech.yaml were used.
+            prefix = dc_config['teleop_twist_node_prefix']
+            self.scale_linear = rospy.get_param(prefix + 'scale_linear', 0.4)
+            self.scale_angular = rospy.get_param(prefix + 'scale_angular', 0.6)
 
             self.image_processed = False
 
@@ -55,7 +63,7 @@ class NeuralControl:
                 self.drive2 = DriveRun(weight_file_name2) # multiple network models can be used
             else:
                 self.drive2 = None
-            rospy.Subscriber(Config.data_collection['camera_image_topic'], Image, self._controller_cb)
+            rospy.Subscriber(dc_config['camera_image_topic'], Image, self._controller_cb)
             self.image = None
             #self.config = Config()
             self.braking = False
@@ -65,20 +73,20 @@ class NeuralControl:
 
     def _controller_cb(self, image): 
         img = self.ic.imgmsg_to_opencv(image)
-        cropped = img[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                      Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+        cropped = img[dc_config['image_crop_y1']:dc_config['image_crop_y2'],
+                      dc_config['image_crop_x1']:dc_config['image_crop_x2']]
                       
-        img = cv2.resize(cropped, (config['input_image_width'],
-                                   config['input_image_height']))
+        img = cv2.resize(cropped, (rn_config['input_image_width'],
+                                   rn_config['input_image_height']))
                                   
         self.image = self.image_process.process(img)
 
         ## this is for CNN-LSTM net models
-        if config['lstm'] is True:
+        if rn_config['lstm'] is True:
             self.image = np.array(self.image).reshape(1, 
-                                 config['input_image_height'],
-                                 config['input_image_width'],
-                                 config['input_image_depth'])
+                                 rn_config['input_image_height'],
+                                 rn_config['input_image_width'],
+                                 rn_config['input_image_depth'])
         self.image_processed = True
         
     def _timer_cb(self):
@@ -86,7 +94,7 @@ class NeuralControl:
 
     def apply_brake(self):
         self.braking = True
-        timer = threading.Timer(Config.run_neural['brake_apply_sec'], self._timer_cb) 
+        timer = threading.Timer(rn_config['brake_apply_sec'], self._timer_cb) 
         timer.start()
 
       
@@ -106,9 +114,9 @@ def main(weight_file_name, weight_file_name2 = None):
     # ready for neural network
     neural_control = NeuralControl(weight_file_name, weight_file_name2)
     
-    rospy.Subscriber(Config.data_collection['base_pose_topic'], Odometry, pos_vel_cb)
+    rospy.Subscriber(dc_config['base_pose_topic'], Odometry, pos_vel_cb)
     # ready for topic publisher
-    joy_pub = rospy.Publisher(Config.data_collection['vehicle_control_topic'], ScoutControl, queue_size = 10)
+    joy_pub = rospy.Publisher(dc_config['vehicle_control_topic'], ScoutControl, queue_size = 10)
     joy_data = ScoutControl()
     joy_data.gearshift = ScoutControl.FORWARD
 
@@ -120,33 +128,33 @@ def main(weight_file_name, weight_file_name2 = None):
     print('------------------------------------------------')
     print('steering \tthrottle: \tbrake \tvelocity')
 
-    use_predicted_throttle = True if config['num_outputs'] == 2 else False
+    use_predicted_throttle = True if rn_config['num_outputs'] == 2 else False
     while not rospy.is_shutdown():
 
         if neural_control.image_processed is False:
             continue
         
         # predicted steering angle from an input image
-        if config['num_inputs'] == 2:
+        if rn_config['num_inputs'] == 2:
             prediction = neural_control.drive.run((neural_control.image, velocity))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, velocity))
-            if config['num_outputs'] == 2:
+            if rn_config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steering = prediction[0][0]
-                joy_data.throttle = prediction[0][1]
+                joy_data.steering = prediction[0][0]*neural_control.scale_angular
+                joy_data.throttle = prediction[0][1]*neural_control.scale_linear
             else: # num_outputs is 1
-                joy_data.steering = prediction[0][0]
+                joy_data.steering = prediction[0][0]*neural_control.scale_angular
         else: # num_inputs is 1
             prediction = neural_control.drive.run((neural_control.image, ))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, ))
-            if config['num_outputs'] == 2:
+            if rn_config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
-                joy_data.steering = prediction[0][0]
-                joy_data.throttle = prediction[0][1]
+                joy_data.steering = prediction[0][0]*neural_control.scale_angular
+                joy_data.throttle = prediction[0][1]*neural_control.scale_linear
             else: # num_outputs is 1
-                joy_data.steering = prediction[0][0]
+                joy_data.steering = prediction[0][0]*neural_control.scale_angular
             
         #############################
         ## very very simple controller
@@ -155,19 +163,19 @@ def main(weight_file_name, weight_file_name2 = None):
         is_sharp_turn = False
         # if brake is not already applied and sharp turn
         if neural_control.braking is False: 
-            if velocity < Config.run_neural['velocity_0']: # too slow then no braking
-                joy_data.throttle = Config.run_neural['throttle_default'] # apply default throttle
+            if velocity < rn_config['velocity_0']: # too slow then no braking
+                joy_data.throttle = rn_config['throttle_default']*neural_control.scale_linear 
                 joy_data.brake = 0
-            elif abs(joy_data.steering) > Config.run_neural['sharp_turn_min']:
+            elif abs(joy_data.steering) > rn_config['sharp_turn_min']:
                 is_sharp_turn = True
             
-            if is_sharp_turn or velocity > Config.run_neural['max_vel']: 
-                joy_data.throttle = Config.run_neural['throttle_sharp_turn']
-                joy_data.brake = Config.run_neural['brake_val']
+            if is_sharp_turn or velocity > rn_config['max_vel']: 
+                joy_data.throttle = rn_config['throttle_sharp_turn']*neural_control.scale_linear
+                joy_data.brake = rn_config['brake_val']*neural_control.scale_linear
                 neural_control.apply_brake()
             else:
                 if use_predicted_throttle is False:
-                    joy_data.throttle = Config.run_neural['throttle_default']
+                    joy_data.throttle = rn_config['throttle_default']*neural_control.scale_linear
                 joy_data.brake = 0
         
         joy_pub.publish(joy_data)
