@@ -24,6 +24,8 @@
 * 10/31/2023: Start with submodules.
 
 ## Example Results
+
+The following is a `yaml` file example for neural network training.
 ```
 ###############################################################################
 # This is a jaerock's configuration for scout
@@ -82,7 +84,7 @@ steering_angle_scale: 1.0
 steering_angle_jitter_tolerance: 0.01
 
 ```
-With the `scout-jaerock-orchard_samples1000` configuration, the training result is as follows.
+With the `scout-jaerock-orchard_samples1000.yaml` configuration, the training result is as follows.
 
 
 ![training](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568_model.png)
