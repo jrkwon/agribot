@@ -23,6 +23,72 @@
 * 11/11/2023: Clean up.
 * 10/31/2023: Start with submodules.
 
+## Example Results
+```
+###############################################################################
+# This is a jaerock's configuration for scout
+
+# file name: <robot-name>-<person-name-who-trained-network>
+# example: if jaerock trained network with data using the robot, scout
+#          the file name must be scout-jaerock.yaml
+
+version: 1.00
+
+# history
+# 1.00 - start
+
+######################################################
+## neural network 
+
+# network definition
+network_type: 3        # refer to neural_net/const.py
+lstm: False
+
+lstm_timestep: 20
+lstm_lr: 0.00001        # 
+cnn_lr:  0.001          # default of Adam is 0.001 
+
+# normalize data
+normalize_data: True
+num_bins: 50
+samples_per_bin: 1000
+
+# training 
+data_shuffle: True
+validation_rate: 0.3
+num_epochs: 100
+batch_size: 32
+num_inputs: 1     # input: image, velocity
+num_outputs: 1    # output: steering_angle, throttle
+early_stopping_patience: 3
+checkpoint: False
+# tensorboard log dir
+tensorboard_log_dir: logs/scalars/
+
+# data augmentation
+data_aug_flip: True
+data_aug_bright: True
+data_aug_shift: False
+
+# input image size to the neural network
+input_image_width:  160
+input_image_height: 160
+input_image_depth:  3
+
+# steering data preprocessing
+# - steering angle adjustment
+steering_angle_scale: 1.0
+# - steering wheel jitter tolerance
+steering_angle_jitter_tolerance: 0.01
+
+```
+With the `scout-jaerock-orchard_samples1000` configuration, the training result is as follows.
+
+
+![training](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568_model.png)
+![scatter](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568.keras_2023-12-01-09-31-52_scatter.png)
+
+The prediction performance around zeo steering angle is overall good. But, it is not particularly good around zero steering. This might be able to be improved by adding more training data, where the robot is moving forward in the center of the orchard path.
 
 ## How to Clone 
 
