@@ -35,6 +35,7 @@ else:
 
 
 dc_config = Config.data_collection
+nn_config = Config.neural_net
 rn_config = Config.run_neural
 velocity = 0
 
@@ -128,18 +129,18 @@ def main(weight_file_name, weight_file_name2 = None):
     print('------------------------------------------------')
     print('steering \tthrottle: \tbrake \tvelocity')
 
-    use_predicted_throttle = True if rn_config['num_outputs'] == 2 else False
+    use_predicted_throttle = True if nn_config['num_outputs'] == 2 else False
     while not rospy.is_shutdown():
 
         if neural_control.image_processed is False:
             continue
         
         # predicted steering angle from an input image
-        if rn_config['num_inputs'] == 2:
+        if nn_config['num_inputs'] == 2:
             prediction = neural_control.drive.run((neural_control.image, velocity))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, velocity))
-            if rn_config['num_outputs'] == 2:
+            if nn_config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
                 joy_data.steering = prediction[0][0]*neural_control.scale_angular
                 joy_data.throttle = prediction[0][1]*neural_control.scale_linear
@@ -149,7 +150,7 @@ def main(weight_file_name, weight_file_name2 = None):
             prediction = neural_control.drive.run((neural_control.image, ))
             if weight_file_name2 != None:
                 prediction2 = neural_control.drive2.run((neural_control.image, ))
-            if rn_config['num_outputs'] == 2:
+            if nn_config['num_outputs'] == 2:
                 # prediction is [ [] ] numpy.ndarray
                 joy_data.steering = prediction[0][0]*neural_control.scale_angular
                 joy_data.throttle = prediction[0][1]*neural_control.scale_linear
