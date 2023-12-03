@@ -77,17 +77,17 @@ class NeuralControl:
         cropped = img[dc_config['image_crop_y1']:dc_config['image_crop_y2'],
                       dc_config['image_crop_x1']:dc_config['image_crop_x2']]
                       
-        img = cv2.resize(cropped, (rn_config['input_image_width'],
-                                   rn_config['input_image_height']))
+        img = cv2.resize(cropped, (nn_config['input_image_width'],
+                                   nn_config['input_image_height']))
                                   
         self.image = self.image_process.process(img)
 
         ## this is for CNN-LSTM net models
-        if rn_config['lstm'] is True:
+        if nn_config['lstm'] is True:
             self.image = np.array(self.image).reshape(1, 
-                                 rn_config['input_image_height'],
-                                 rn_config['input_image_width'],
-                                 rn_config['input_image_depth'])
+                                 nn_config['input_image_height'],
+                                 nn_config['input_image_width'],
+                                 nn_config['input_image_depth'])
         self.image_processed = True
         
     def _timer_cb(self):
