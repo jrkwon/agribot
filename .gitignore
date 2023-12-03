@@ -2,6 +2,10 @@
 # e2e dataset
 e2e-dataset/
 
+############
+# bag files
+*.bag
+
 ###############
 # rtabmap database
 *.db
