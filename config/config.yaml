@@ -2,6 +2,6 @@
 # - If you want to change it, make your own copy like <meaningful>.yaml
 # - The config name will be postfixed to the neural network weight file name
 # - update: separated configs
-neural_net: scout-jaerock-orchard
+neural_net: scout-jaerock-orchard_samples1000
 data_collection: scout-jaerock-orchard
 run_neural: scout-jaerock-orchard
