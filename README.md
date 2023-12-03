@@ -1,26 +1,27 @@
 # AgriBot: Intelligent Agricultural Robot 
-[![demo-image](img4doc/2023-10-31-14-57-53-788068_-0.22_-19.61.jpg)](https://youtu.be/hPp8q_WmuDs?si=SRECyqMIKQlg1TZV)
-[![demo-image2](img4doc/Screenshot%20from%202023-11-27%2016-35-59.png)](https://www.youtube.com/watch?v=VOlLl6GCoa4)
+[![demo-image](img4doc/2023-12-01-09-32-41-249618_-0.33_-29.90.jpg)](https://youtu.be/FeGPh5DjoWg)
+[![demo-image2](img4doc/Screenshot%20from%202023-11-27%2016-35-59.png)](https://youtu.be/wanTtd75vcQ)
 ## To Do
 
 * Check if `scan` or `realsense/scan` for a real robot and simulated?
 
 ## History
 
-* 12/01/2023: Add `checkpoint` saving option. The default is `False`. 
+* 12/02/2023: Fix data normalization algorithm.
+* 12/01/2023: Add `checkpoint` saving option. The default is `False`.
 * 11/22/2023: Add `gen_pose` option for `fake_localization`.
-* 11/22/2023: Add `p3d` and `fake_localization` for pose data
-* 11/20/2023: Merge the `noetic-devel` branch to `master`
-* 11/20/2023: Add `scout_control_translator`
-* 11/19/2023: Add `joystick_translator`
-* 11/16/2023: Start Noetic version
-* 11/14/2023: Add several How-To's
-* 11/14/2023: Add `view_drive.py` avoiding a direct use of `drive_view.py`
-* 11/12/2023: Add `test_drive.py` replacing a direct use of `drive_log.py`
-* 11/11/2023: Test in the latest TensorFlow
-* 11/11/2023: Change model format to Keras
-* 11/11/2023: Clean up
-* 10/31/2023: Start with submodules
+* 11/22/2023: Add `p3d` and `fake_localization` for pose data.
+* 11/20/2023: Merge the `noetic-devel` branch to `master`.
+* 11/20/2023: Add `scout_control_translator`.
+* 11/19/2023: Add `joystick_translator`.
+* 11/16/2023: Start Noetic version.
+* 11/14/2023: Add several How-To's.
+* 11/14/2023: Add `view_drive.py` avoiding a direct use of `drive_view.py`.
+* 11/12/2023: Add `test_drive.py` replacing a direct use of `drive_log.py`.
+* 11/11/2023: Test in the latest TensorFlow.
+* 11/11/2023: Change model format to Keras.
+* 11/11/2023: Clean up.
+* 10/31/2023: Start with submodules.
 
 
 ## How to Clone 
