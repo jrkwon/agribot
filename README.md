@@ -86,10 +86,13 @@ steering_angle_jitter_tolerance: 0.01
 ```
 With the `scout-jaerock-orchard_samples1000.yaml` configuration, the training result is as follows.
 
+![normalization](img4doc/2023-12-01-09-31-52_2023-12-03-00-15-22-568_normalized.png)
+The total number of bins is 50 and the maximum samples per bin is 1000 for training data normalization.
 
 ![training](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568_model.png)
-![scatter](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568.keras_2023-12-01-09-31-52_scatter.png)
+The MSE loss curves are nicely smooth. The `EarlyStopping` callback was used.
 
+![scatter](img4doc/2023-12-01-09-31-52_scout-jaerock-orchard_samples1000_n3_2023-12-03-00-15-22-568.keras_2023-12-01-09-31-52_scatter.png)
 The prediction performance around zeo steering angle is overall good. But, it is not particularly good around zero steering. This might be able to be improved by adding more training data, where the robot is moving forward in the center of the orchard path.
 
 ## How to Clone 
