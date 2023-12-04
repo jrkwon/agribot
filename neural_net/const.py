@@ -37,3 +37,16 @@ CKPT_DIR             = 'ckpt'
 ######################
 # data format
 DATA_HEADER = "image_fname,steering_angle,throttle,brake,time,vel,vel_x,vel_y,vel_z,ang_vel_x,ang_vel_y,ang_vel_z,pos_x,pos_y,pos_z\n"
+
+###################
+# ScoutControl.msg
+# ----------------
+# uint8 NO_COMMAND=0
+# uint8 NEUTRAL=1
+# uint8 FORWARD=2
+# uint8 REVERSE=3
+GEARSHIFTS = {
+    1: "Neutral", # ScoutControl.NEUTRAL
+    2: "Forward", # ScoutControl.FORWARD
+    3: "Reverse"  # ScoutControl.REVERSE
+}
