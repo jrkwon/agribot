@@ -7,6 +7,7 @@
 
 ## History
 
+* 01/02/2024: Remove `fake_localization` and the `gen_pose` option.
 * 12/02/2023: Fix data normalization algorithm.
 * 12/01/2023: Add `checkpoint` saving option. The default is `False`.
 * 11/22/2023: Add `gen_pose` option for `fake_localization`.
@@ -124,16 +125,15 @@ conda env create --file config/conda/environment.yaml
 
 ## How to Use
 
-Start the `gazebo` simulation environment in `agribot_ros` with `true` for `gen_pose`. The `gen_pose` is for generating _fake_ localization information. When the `gazebo` is being used for `SLAM`, `gen_pose` must be false (default).
 ```bash
-./start_simul.sh launch_filename(without .launch) gen_pose:=true
+./start_simul.sh launch_filename(without .launch)
 ```
 
 The name should be without the `.launch` file extension. 
 
 If `scout_orchard_world` is the launch file name (without the .launch extension)that you would like to use, do this.
 ```bash
-./start_simul.sh scout_orchard_world gen_pose:=true
+./start_simul.sh scout_orchard_world 
 ```
 
 Then, open another terminal. 
