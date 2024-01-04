@@ -32,6 +32,7 @@ class DriveData:
         self.time_stamps = []
         self.velocities = []
         self.velocities_xyz = []
+        self.angular_velocities_xyz = []
         self.positions_xyz = []
 
 
@@ -129,6 +130,9 @@ class DriveData:
                 self.velocities_xyz.append((float(self.df.loc[i]['vel_x']), 
                                             float(self.df.loc[i]['vel_y']), 
                                             float(self.df.loc[i]['vel_z'])))
+                self.angular_velocities_xyz.append((float(self.df.loc[i]['ang_vel_x']), 
+                                                    float(self.df.loc[i]['ang_vel_y']), 
+                                                    float(self.df.loc[i]['ang_vel_z'])))
                 self.positions_xyz.append((float(self.df.loc[i]['pos_x']), 
                                            float(self.df.loc[i]['pos_y']), 
                                            float(self.df.loc[i]['pos_z'])))

@@ -17,6 +17,7 @@ import os
 from tqdm import tqdm
 
 import const
+import utilities
 from drive_data import DriveData
 from config import Config
 
@@ -40,7 +41,7 @@ def build_csv(data_path):
     os.rename(data_path + csv_file, csv_backup_name)
     print('rename ' + data_path + csv_file + ' to ' + csv_backup_name)
 
-    data = DriveData(csv_backup_name)
+    data = DriveData(csv_backup_name, utilities.get_current_timestamp())
     data.read(normalize = False)
 
     new_csv = []
@@ -58,6 +59,9 @@ def build_csv(data_path):
                         + str(data.velocities_xyz[i][0]) + ','
                         + str(data.velocities_xyz[i][1]) + ','
                         + str(data.velocities_xyz[i][2]) + ','
+                        + str(data.angular_velocities_xyz[i][0]) + ','
+                        + str(data.angular_velocities_xyz[i][1]) + ','
+                        + str(data.angular_velocities_xyz[i][2]) + ','
                         + str(data.positions_xyz[i][0]) + ','
                         + str(data.positions_xyz[i][1]) + ','
                         + str(data.positions_xyz[i][2]) + '\n')
