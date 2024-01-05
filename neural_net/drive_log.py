@@ -82,7 +82,7 @@ class DriveLog:
         self.measurements = []
         self.predictions = []
         self.differences = []
-        self.squared_differences = []
+        #self.squared_differences = []
 
     ###########################################################################
     #
@@ -194,10 +194,10 @@ class DriveLog:
                 self.predictions.append(pred_steering_angle)
                 diff = abs(label_steering_angle - pred_steering_angle)
                 self.differences.append(diff)
-                self.squared_differences.append(diff*2)
+                #self.squared_differences.append(diff*2)
                 log = image_name+','+str(label_steering_angle)+','+str(pred_steering_angle)\
-                                +','+str(diff)\
-                                +','+str(diff**2)
+                                +','+str(diff)
+                                # +','+str(diff**2)
 
                 file.write(log+'\n')
                 # delete the 1st element
@@ -232,12 +232,12 @@ class DriveLog:
             self.predictions.append(pred_steering_angle)
             diff = abs(label_steering_angle - pred_steering_angle)
             self.differences.append(diff)
-            self.squared_differences.append(diff**2)
+            #self.squared_differences.append(diff**2)
             #print(image_name, measurement[0], predict,\ 
             #                  abs(measurement[0]-predict))
             log = image_name+','+str(label_steering_angle) + ',' + str(pred_steering_angle)\
-                            +','+str(diff)\
-                            +','+str(diff**2)
+                            +','+str(diff)
+                            #+','+str(diff**2)
 
             file.write(log+'\n')
            
@@ -256,7 +256,8 @@ class DriveLog:
         #bar = ProgressBar()
         bar = tqdm(self.test_data, desc="Processing", unit="file")
 
-        file.write('image_name, label_steering_angle, pred_steering_angle, abs_error, squared_error\n')
+        #file.write('image_name,label_steering_angle,pred_steering_angle,abs_error,squared_error\n')
+        file.write('image_name,label_steering_angle,pred_steering_angle,abs_error\n')
 
         if Config.neural_net['lstm'] is True:
             self._lstm_run(file, bar)
