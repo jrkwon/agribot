@@ -81,7 +81,7 @@ class DriveLog:
 
         self.measurements = []
         self.predictions = []
-        self.differences = []
+        #self.differences = []
         #self.squared_differences = []
 
     ###########################################################################
@@ -107,17 +107,26 @@ class DriveLog:
     ###########################################################################
     #
     def _plot_results(self):
+        # memory management for large data
+        measurements = np.array(self.measurements)
+        self.measurements = None
+        predictions = np.array(self.predictions)        
+        self.predictions = None
+        np_differences = abs(measurements - predictions)
+        differences = np_differences.tolist()
+        np_differences = None
+
         plt.figure()
         # Plot a histogram of the prediction errors
         num_bins = 25
-        hist, bins = np.histogram(self.differences, num_bins)
+        hist, bins = np.histogram(differences, num_bins)
         center = (bins[:-1]+ bins[1:]) * 0.5
         plt.bar(center, hist, width=0.05)
         #plt.title('Historgram of Predicted Errors')
         plt.xlabel('Steering Angle')
         plt.ylabel('Number of Predictions')
         plt.xlim(0, 1.0)
-        plt.plot(np.min(self.differences), np.max(self.differences))
+        plt.plot(np.min(differences), np.max(differences))
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_err_hist')
 
@@ -139,8 +148,8 @@ class DriveLog:
         # Plot a Side-By-Side Comparison
         plt.plot(self.measurements)
         plt.plot(self.predictions)
-        mean = sum(self.differences)/len(self.differences)
-        variance = sum([((x - mean) ** 2) for x in self.differences]) / len(self.differences) 
+        mean = sum(differences)/len(differences)
+        variance = sum([((x - mean) ** 2) for x in differences]) / len(differences) 
         std = variance ** 0.5
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(mean, std))
         #plt.title('Ground Truth vs. Prediction')
@@ -150,6 +159,25 @@ class DriveLog:
         plt.legend(['ground truth', 'prediction'], loc='upper right')
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_comparison')
+
+        plt.figure()
+        # Plot a Side-By-Side Comparison
+        count = len(self.measurements)
+        partial = 1000 if count > 1000 else count
+
+        plt.plot(self.measurements[:partial])
+        plt.plot(self.predictions[:partial])
+        mean = sum(differences[:partial])/len(differences[:partial])
+        variance = sum([((x - mean) ** 2) for x in differences[:partial]]) / len(differences[:partial]) 
+        std = variance ** 0.5
+        plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(mean, std))
+        #plt.title('Ground Truth vs. Prediction')
+        plt.ylim([-1.0, 1.0])
+        plt.xlabel('Time Step')
+        plt.ylabel('Steering Angle')
+        plt.legend(['ground truth', 'prediction'], loc='upper right')
+        plt.tight_layout()
+        self._savefigs(plt, self.filename_base + '_comparison_1st1000')
 
         # show all figures
         #plt.show()
@@ -192,11 +220,11 @@ class DriveLog:
                 label_steering_angle = measurement[0] # labeled steering angle
                 self.measurements.append(label_steering_angle)
                 self.predictions.append(pred_steering_angle)
-                diff = abs(label_steering_angle - pred_steering_angle)
-                self.differences.append(diff)
+                #diff = abs(label_steering_angle - pred_steering_angle)
+                #self.differences.append(diff)
                 #self.squared_differences.append(diff*2)
-                log = image_name+','+str(label_steering_angle)+','+str(pred_steering_angle)\
-                                +','+str(diff)
+                log = image_name+','+str(label_steering_angle)+','+str(pred_steering_angle) #\
+                                #+','+str(diff) \
                                 # +','+str(diff**2)
 
                 file.write(log+'\n')
@@ -230,13 +258,13 @@ class DriveLog:
             label_steering_angle = measurement[0]
             self.measurements.append(label_steering_angle)
             self.predictions.append(pred_steering_angle)
-            diff = abs(label_steering_angle - pred_steering_angle)
-            self.differences.append(diff)
+            #diff = abs(label_steering_angle - pred_steering_angle)
+            #self.differences.append(diff)
             #self.squared_differences.append(diff**2)
             #print(image_name, measurement[0], predict,\ 
             #                  abs(measurement[0]-predict))
-            log = image_name+','+str(label_steering_angle) + ',' + str(pred_steering_angle)\
-                            +','+str(diff)
+            log = image_name+','+str(label_steering_angle) + ',' + str(pred_steering_angle) #\
+                            #+','+str(diff)
                             #+','+str(diff**2)
 
             file.write(log+'\n')
@@ -257,7 +285,7 @@ class DriveLog:
         bar = tqdm(self.test_data, desc="Processing", unit="file")
 
         #file.write('image_name,label_steering_angle,pred_steering_angle,abs_error,squared_error\n')
-        file.write('image_name,label_steering_angle,pred_steering_angle,abs_error\n')
+        file.write('image_name,label_steering_angle,pred_steering_angle\n')
 
         if Config.neural_net['lstm'] is True:
             self._lstm_run(file, bar)
