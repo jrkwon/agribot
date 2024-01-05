@@ -147,6 +147,11 @@ Then `source` the `setup.bash`. You must be at the `agribot` directory when you 
 source setup.bash
 ```
 
+## How to set configuration files
+
+In the `config` directory, there are `config-<name>.yaml` files. You can choose which `yaml` should be used by changing the name `CONFIG_FILENAME` in `neural_net/const.py`
+
+
 ## How to Collect Data
 
 The default data location is `agribot/e2e-dataset/<data-id>`. If `jaerock` collected a data at 5:50:10 PM, Nov 12, 2023, then the directory name of the dataset is `agribot/e2e-dataset/jaerock/2023-11-12-17-50-10`.

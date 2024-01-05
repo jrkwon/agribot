@@ -14,7 +14,7 @@ History:
 
 #####################
 # config file name
-CONF_FILENAME        = 'config-bada.yaml'
+CONFIG_FILENAME      = 'config-bada.yaml'
 
 #####################
 # network vis

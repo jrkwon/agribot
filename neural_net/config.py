@@ -20,7 +20,7 @@ import const
 
 class Config:
     try:
-        config_name = os.environ['AGRIBOT_PATH'] + '/config/' + const.CONF_FILENAME
+        config_name = os.environ['AGRIBOT_PATH'] + '/config/' + const.CONFIG_FILENAME
     except:
         exit('ERROR: AGRIBOT_PATH not defined. Please source setup.bash.') 
 
