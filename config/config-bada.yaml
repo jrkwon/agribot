@@ -2,6 +2,6 @@
 # - If you want to change it, make your own copy like <meaningful>.yaml
 # - The config name will be postfixed to the neural network weight file name
 # - update: separated configs
-neural_net: scout-bada-orchard-no-crop
-data_collection: scout-bada-orchard-no-crop
+neural_net: scout-bada-orchard
+data_collection: scout-bada-orchard-bottom-crop
 run_neural: scout-bada-orchard
