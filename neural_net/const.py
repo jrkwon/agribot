@@ -13,6 +13,10 @@ History:
 # constant definition
 
 #####################
+# config file name
+CONF_FILENAME        = 'config-bada.yaml'
+
+#####################
 # network vis
 LAST_CONV_LAYER      = "conv2d_last"
 
