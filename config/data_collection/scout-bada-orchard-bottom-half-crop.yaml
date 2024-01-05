@@ -1,0 +1,50 @@
+###############################################################################
+# This is bada's configuration for scout
+
+# file name: <robot-name>-<person-name-who-collected-data>
+# example: if jaerock collected data with the robot, scout
+#          the file name must be scout-jaerock.yaml
+
+version: 1.00
+
+# history
+# 1.00: start
+
+######################################################
+## data collection - save full image
+
+# driving simulator
+steering_angle_max: 90 #450
+steering_angle_tolerance: 0.015 # around 7.5 degree
+
+# vehicle name
+vehicle_name: scout
+
+# camera image topic 
+camera_image_topic: /camera/color/image_raw
+
+# vehicle control topic name
+vehicle_control_topic: /scout_control #/joy_teleop/joy
+# joystick topic name
+joystick_topic: /joy_teleop/joy
+# telop twist node prefix
+teleop_twist_node_prefix: /joy_teleop/teleop_twist_joy/
+## scout control name: joystick abstraction
+#scout_control: scout_control
+
+# p3d - current position and velocity
+base_pose_topic: /base_pose_ground_truth # using fake_localization
+#/scout_velocity_controller/odom  
+
+######################################################
+## when training and running, cropping input image 
+
+# crop (capture) area from a camera image
+# - gazebo simulated camera resolution: 800x800 (deafult)
+image_crop_x1: 120 #0
+image_crop_y1: 239 #155   # 373
+image_crop_x2: 639 #640
+image_crop_y2: 359 #375   # 516
+
+image_width: 640
+image_height: 480

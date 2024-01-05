@@ -1,0 +1,29 @@
+###############################################################################
+# This is bada's configuration.
+
+version: 1.00
+
+# -------------------------
+# joy cmd_vel
+cmd_vel_topic: /joy_teleop/cmd_vel
+
+######################################################
+## driving strategy - run_neural.py
+
+# max vel
+max_vel: 18
+# steering angle value for sharp turn
+sharp_turn_min: 0.7 
+# when sharp turn, apply brake for this sec.
+brake_apply_sec: 1
+# brake value
+brake_val: 0.7
+# throttle at non sharp turn
+throttle_default: 1
+# throttle at sharp turn
+throttle_sharp_turn: 0.1
+# velocity threshold for not moving
+velocity_0: 0.03
+## scale factors
+#scale_factor_throttle: 1
+#scale_factor_steering: 1
