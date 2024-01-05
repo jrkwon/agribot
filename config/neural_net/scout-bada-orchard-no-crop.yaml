@@ -34,7 +34,7 @@ batch_size: 32
 num_inputs: 1     # input: image, velocity
 num_outputs: 1    # output: steering_angle, throttle
 early_stopping_patience: 3
-checkpoint: False
+checkpoint: True
 # tensorboard log dir
 tensorboard_log_dir: logs/scalars/
 

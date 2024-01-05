@@ -16,10 +16,11 @@ History:
 import os
 import yaml
 import sys
+import const 
 
 class Config:
     try:
-        config_name = os.environ['AGRIBOT_PATH'] + '/config/' + 'config.yaml'
+        config_name = os.environ['AGRIBOT_PATH'] + '/config/' + const.CONF_FILENAME
     except:
         exit('ERROR: AGRIBOT_PATH not defined. Please source setup.bash.') 
 
