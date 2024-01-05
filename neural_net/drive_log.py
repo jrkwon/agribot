@@ -132,7 +132,7 @@ class DriveLog:
 
         plt.figure()
         # Plot a Scatter Plot of the Error
-        plt.scatter(self.measurements, self.predictions)
+        plt.scatter(measurements, predictions)
         #plt.title('Scatter Plot of Errors')
         plt.xlabel('True Values')
         plt.ylabel('Predictions')
@@ -146,8 +146,8 @@ class DriveLog:
 
         plt.figure()
         # Plot a Side-By-Side Comparison
-        plt.plot(self.measurements)
-        plt.plot(self.predictions)
+        plt.plot(measurements)
+        plt.plot(predictions)
         mean = sum(differences)/len(differences)
         variance = sum([((x - mean) ** 2) for x in differences]) / len(differences) 
         std = variance ** 0.5
@@ -162,13 +162,13 @@ class DriveLog:
 
         plt.figure()
         # Plot a Side-By-Side Comparison
-        count = len(self.measurements)
+        count = len(measurements)
         partial = 1000 if count > 1000 else count
 
-        plt.plot(self.measurements[:partial])
-        plt.plot(self.predictions[:partial])
-        mean = sum(differences[:partial])/len(differences[:partial])
-        variance = sum([((x - mean) ** 2) for x in differences[:partial]]) / len(differences[:partial]) 
+        plt.plot(measurements[-partial:])
+        plt.plot(predictions[-partial:])
+        mean = sum(differences[-partial:])/len(differences[-partial:])
+        variance = sum([((x - mean) ** 2) for x in differences[-partial:]]) / len(differences[-partial:]) 
         std = variance ** 0.5
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(mean, std))
         #plt.title('Ground Truth vs. Prediction')
@@ -177,7 +177,7 @@ class DriveLog:
         plt.ylabel('Steering Angle')
         plt.legend(['ground truth', 'prediction'], loc='upper right')
         plt.tight_layout()
-        self._savefigs(plt, self.filename_base + '_comparison_1st1000')
+        self._savefigs(plt, self.filename_base + '_comparison_last1000')
 
         # show all figures
         #plt.show()
