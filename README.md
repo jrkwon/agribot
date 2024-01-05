@@ -187,7 +187,7 @@ Note:
 
 Here is an example:
 ```bash
-conda activate agribots
+conda activate agribot
 cd path/to/agribot
 
 source setup.bash
@@ -211,7 +211,7 @@ Then, a trained model name is
 Let us test the model with a dataset. You may test the trained network with your training dataset for an initial trial. Then, you may test it with a test data set.
 
 ```bash
-conda activate agribots
+conda activate agribot
 cd path/to/agribot
 
 source setup.bash
@@ -221,7 +221,7 @@ python neural_net/test_drive.py path/to/model path/to/data-dir
 ## How to Test Single Prediction
 
 ```bash
-conda activate agribots
+conda activate agribot
 cd path/to/agribot
 
 source setup.bash
@@ -231,7 +231,7 @@ python neural_net/test_run.py path/to/model path/to/image
 ## How to Visualize Heatmap
 
 ```bash
-conda activate agribots
+conda activate agribot
 cd path/to/agribot
 
 source setup.bash
@@ -242,7 +242,7 @@ python neural_net/visualize_heatmap.py path/to/model path/to/image
 
 - Generate images showing control signals.
     ```bash
-    conda activate agribots
+    conda activate agribot
     cd path/to/agribot
 
     source setup.bash
