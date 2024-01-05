@@ -38,8 +38,8 @@ def main(model_path, input):
     ax1.imshow(image)
     ax1.set(title = 'Original image')
 
-    image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                    Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+    image = image[Config.neural_net['image_crop_y1']:Config.neural_net['image_crop_y2'],
+                    Config.neural_net['image_crop_x1']:Config.neural_net['image_crop_x2']]
 
     image = cv2.resize(image, 
                         (Config.neural_net['input_image_width'],

@@ -167,8 +167,8 @@ class DriveTrain:
                 image = cv2.imread(image_path)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-                image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                                Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+                image = image[Config.neural_net['image_crop_y1']:Config.neural_net['image_crop_y2'],
+                                Config.neural_net['image_crop_x1']:Config.neural_net['image_crop_x2']]
 
                 image = cv2.resize(image, 
                                     (config['input_image_width'],
@@ -219,8 +219,8 @@ class DriveTrain:
                     image = cv2.imread(image_path)
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-                    image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                                Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+                    image = image[Config.neural_net['image_crop_y1']:Config.neural_net['image_crop_y2'],
+                                Config.neural_net['image_crop_x1']:Config.neural_net['image_crop_x2']]
 
                     image = cv2.resize(image, 
                                     (config['input_image_width'],

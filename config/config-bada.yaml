@@ -3,5 +3,5 @@
 # - The config name will be postfixed to the neural network weight file name
 # - update: separated configs
 neural_net: scout-bada-orchard
-data_collection: scout-bada-orchard-bottom-crop
+data_collection: scout-bada-orchard-bottom-half-crop
 run_neural: scout-bada-orchard

@@ -36,15 +36,4 @@ teleop_twist_node_prefix: /joy_teleop/teleop_twist_joy/
 base_pose_topic: /base_pose_ground_truth # using fake_localization
 #/scout_velocity_controller/odom  
 
-######################################################
-## when training and running, cropping input image 
 
-# crop (capture) area from a camera image
-# - gazebo simulated camera resolution: 800x800 (deafult)
-image_crop_x1: 0 #0
-image_crop_y1: 239 #155   # 373
-image_crop_x2: 639 #640
-image_crop_y2: 479 #375   # 516
-
-image_width: 640
-image_height: 480

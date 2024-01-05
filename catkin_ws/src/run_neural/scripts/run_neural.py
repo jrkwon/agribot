@@ -74,8 +74,8 @@ class NeuralControl:
 
     def _controller_cb(self, image): 
         img = self.ic.imgmsg_to_opencv(image)
-        cropped = img[dc_config['image_crop_y1']:dc_config['image_crop_y2'],
-                      dc_config['image_crop_x1']:dc_config['image_crop_x2']]
+        cropped = img[nn_config['image_crop_y1']:nn_config['image_crop_y2'],
+                      nn_config['image_crop_x1']:nn_config['image_crop_x2']]
                       
         img = cv2.resize(cropped, (nn_config['input_image_width'],
                                    nn_config['input_image_height']))

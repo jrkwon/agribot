@@ -31,8 +31,8 @@ class ImageSettings:
         
         full_image_name = abs_path + image_name
 
-        input_image_size = (Config.data_collection['image_width'], 
-                            Config.data_collection['image_height'])
+        input_image_size = (Config.neural_net['image_width'], 
+                            Config.neural_net['image_height'])
 
         margin_x = 40
         margin_y = 50
@@ -134,8 +134,8 @@ class DriveView:
             # don't forget OSCAR's default color space is BGR (cv2's default)
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            image = image[Config.data_collection['image_crop_y1']:Config.data_collection['image_crop_y2'],
-                        Config.data_collection['image_crop_x1']:Config.data_collection['image_crop_x2']]
+            image = image[Config.neural_net['image_crop_y1']:Config.neural_net['image_crop_y2'],
+                        Config.neural_net['image_crop_x1']:Config.neural_net['image_crop_x2']]
 
             image = cv2.resize(image, (Config.neural_net['input_image_width'],
                                     Config.neural_net['input_image_height']))
