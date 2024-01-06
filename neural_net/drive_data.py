@@ -36,8 +36,9 @@ class DriveData:
         self.positions_xyz = []
 
 
-    def read(self, read = True, show_statistics = True, normalize = True):
-        self.df = pd.read_csv(self.csv_fname, header=0, index_col=False) 
+    # nrows: Number of rows of file to read. Useful for reading peieces of large files
+    def read(self, read = True, show_statistics = True, normalize = True, nrows=None):
+        self.df = pd.read_csv(self.csv_fname, header=0, index_col=False, nrows=nrows) 
 
         ############################################
         # show statistics

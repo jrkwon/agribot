@@ -23,7 +23,7 @@ def train(data_folder_name, gpu_id):
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu_id
 
     drive_train = DriveTrain(data_folder_name)
-    drive_train.train(show_summary = True)
+    drive_train.train(show_summary = False)
 
     
 ###############################################################################

@@ -30,6 +30,8 @@ import utilities
 ###############################################################################
 #
 class DriveLog:
+    MAX_FILES =  100000 # for large files. Not enough memory to process.
+    SUBSET_COUNT = 5000
     LINE_WIDTH = 0.5
     LINE_ALPHA = 0.5
     SCATTER_SIZE = 5
@@ -92,7 +94,7 @@ class DriveLog:
     #
     def _prepare_data(self):
         
-        self.data.read(normalize = False)
+        self.data.read(normalize = False, nrows=self.MAX_FILES)
     
         self.test_data = list(zip(self.data.image_names, self.data.velocities, self.data.measurements))
         self.num_test_samples = len(self.test_data)
@@ -178,11 +180,10 @@ class DriveLog:
 
     ###########################################################################
     #
-    def _plot_comparison_last1000(self, fname):
+    def _plot_comparison_last_section(self, fname):
         df = pd.read_csv(fname)
         count = df['label_steering_angle'].shape[0]
-        print(f"count:{count}")
-        partial = 1000 if count > 1000 else count
+        partial = self.SUBSET_COUNT if count > self.SUBSET_COUNT else count
 
         measurements = df['label_steering_angle'][-partial:].tolist()
         predictions  = df['pred_steering_angle'][-partial:].tolist()
@@ -325,7 +326,7 @@ class DriveLog:
         self._plot_prediction_errors(fname)
         self._plot_scatter(fname)
         self._plot_comparison(fname)
-        self._plot_comparison_last1000(fname)
+        self._plot_comparison_last_section(fname)
      
 
 ###############################################################################
