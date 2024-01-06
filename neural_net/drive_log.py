@@ -18,6 +18,7 @@ import numpy as np
 #from progressbar import ProgressBar
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+import pandas as pd
 
 import const
 from net_model import NetModel
@@ -79,8 +80,8 @@ class DriveLog:
         
         self.image_process = ImageProcess()
 
-        self.measurements = []
-        self.predictions = []
+        #self.measurements = []
+        #self.predictions = []
         #self.differences = []
         #self.squared_differences = []
 
@@ -101,20 +102,15 @@ class DriveLog:
     def _savefigs(self, plt, filename):
         plt.savefig(filename + '.png', dpi=150)
         plt.savefig(filename + '.pdf', dpi=150)
-        print('Saved ' + filename + '.png & .pdf.')
+        print('Saved ' + filename + '.png and pdf.')
 
 
     ###########################################################################
     #
-    def _plot_results(self):
-        # memory management for large data
-        measurements = np.array(self.measurements)
-        self.measurements = None
-        predictions = np.array(self.predictions)        
-        self.predictions = None
-        np_differences = abs(measurements - predictions)
-        differences = np_differences.tolist()
-        np_differences = None
+    def _plot_prediction_errors(self, fname):
+        df = pd.read_csv(fname)
+        differences  = df['abs_error'].tolist()
+        df = None
 
         plt.figure()
         # Plot a histogram of the prediction errors
@@ -130,6 +126,15 @@ class DriveLog:
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_err_hist')
 
+
+    ###########################################################################
+    #
+    def _plot_scatter(self, fname):
+        df = pd.read_csv(fname)
+        measurements = df['label_steering_angle'].tolist()
+        predictions  = df['pred_steering_angle'].tolist()
+        df = None
+
         plt.figure()
         # Plot a Scatter Plot of the Error
         plt.scatter(measurements, predictions)
@@ -144,14 +149,21 @@ class DriveLog:
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_scatter')
 
+    ###########################################################################
+    #
+    def _plot_comparison(self, fname):
+        df = pd.read_csv(fname)
+        measurements = df['label_steering_angle'].tolist()
+        predictions  = df['pred_steering_angle'].tolist()
+        diff_mean  = df['abs_error'].mean()
+        diff_std   = df['abs_error'].std()
+        df = None
+
         plt.figure()
         # Plot a Side-By-Side Comparison
         plt.plot(measurements)
         plt.plot(predictions)
-        mean = sum(differences)/len(differences)
-        variance = sum([((x - mean) ** 2) for x in differences]) / len(differences) 
-        std = variance ** 0.5
-        plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(mean, std))
+        plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
         plt.xlabel('Time Step')
@@ -160,17 +172,27 @@ class DriveLog:
         plt.tight_layout()
         self._savefigs(plt, self.filename_base + '_comparison')
 
-        plt.figure()
-        # Plot a Side-By-Side Comparison
-        count = len(measurements)
+
+    ###########################################################################
+    #
+    def _plot_comparison_last1000(self, fname):
+        df = pd.read_csv(fname)
+        count = df['label_steering_angle'].shape[0]
+        print(f"count:{count}")
         partial = 1000 if count > 1000 else count
 
-        plt.plot(measurements[-partial:])
-        plt.plot(predictions[-partial:])
-        mean = sum(differences[-partial:])/len(differences[-partial:])
-        variance = sum([((x - mean) ** 2) for x in differences[-partial:]]) / len(differences[-partial:]) 
-        std = variance ** 0.5
-        plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(mean, std))
+        measurements = df['label_steering_angle'][-partial:].tolist()
+        predictions  = df['pred_steering_angle'][-partial:].tolist()
+        diff_mean  = df['abs_error'][-partial:].mean()
+        diff_std   = df['abs_error'][-partial:].std()
+        df = None
+
+        plt.figure()
+        # Plot a Side-By-Side Comparison
+
+        plt.plot(measurements)
+        plt.plot(predictions)
+        plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
         plt.xlabel('Time Step')
@@ -218,13 +240,13 @@ class DriveLog:
                     pred_throttle = predict[0][1]
                 
                 label_steering_angle = measurement[0] # labeled steering angle
-                self.measurements.append(label_steering_angle)
-                self.predictions.append(pred_steering_angle)
-                #diff = abs(label_steering_angle - pred_steering_angle)
+                #self.measurements.append(label_steering_angle)
+                #self.predictions.append(pred_steering_angle)
+                diff = abs(label_steering_angle - pred_steering_angle)
                 #self.differences.append(diff)
                 #self.squared_differences.append(diff*2)
-                log = image_name+','+str(label_steering_angle)+','+str(pred_steering_angle) #\
-                                #+','+str(diff) \
+                log = image_name+','+str(label_steering_angle)+','+str(pred_steering_angle) \
+                                +','+str(diff) #\
                                 # +','+str(diff**2)
 
                 file.write(log+'\n')
@@ -256,15 +278,15 @@ class DriveLog:
                 pred_throttle = predict[0][1]
 
             label_steering_angle = measurement[0]
-            self.measurements.append(label_steering_angle)
-            self.predictions.append(pred_steering_angle)
-            #diff = abs(label_steering_angle - pred_steering_angle)
+            #self.measurements.append(label_steering_angle)
+            #self.predictions.append(pred_steering_angle)
+            diff = abs(label_steering_angle - pred_steering_angle)
             #self.differences.append(diff)
             #self.squared_differences.append(diff**2)
             #print(image_name, measurement[0], predict,\ 
             #                  abs(measurement[0]-predict))
-            log = image_name+','+str(label_steering_angle) + ',' + str(pred_steering_angle) #\
-                            #+','+str(diff)
+            log = image_name+','+str(label_steering_angle) + ',' + str(pred_steering_angle) \
+                            +','+str(diff) #\
                             #+','+str(diff**2)
 
             file.write(log+'\n')
@@ -285,7 +307,7 @@ class DriveLog:
         bar = tqdm(self.test_data, desc="Processing", unit="file")
 
         #file.write('image_name,label_steering_angle,pred_steering_angle,abs_error,squared_error\n')
-        file.write('image_name,label_steering_angle,pred_steering_angle\n')
+        file.write('image_name,label_steering_angle,pred_steering_angle,abs_error\n')
 
         if Config.neural_net['lstm'] is True:
             self._lstm_run(file, bar)
@@ -297,10 +319,10 @@ class DriveLog:
         file.close()
         print('Saved ' + fname + '.')
 
-        self._plot_results()
-
-
-
+        self._plot_prediction_errors(fname)
+        self._plot_scatter(fname)
+        self._plot_comparison(fname)
+        self._plot_comparison_last1000(fname)
      
 
 ###############################################################################
