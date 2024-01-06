@@ -30,6 +30,9 @@ import utilities
 ###############################################################################
 #
 class DriveLog:
+    LINE_WIDTH = 0.5
+    LINE_ALPHA = 0.5
+    SCATTER_SIZE = 5
     
     ###########################################################################
     # model_path = 'path_to_pretrained_model_name' excluding '.h5' or 'json'
@@ -137,7 +140,7 @@ class DriveLog:
 
         plt.figure()
         # Plot a Scatter Plot of the Error
-        plt.scatter(measurements, predictions)
+        plt.scatter(measurements, predictions, s=self.SCATTER_SIZE)
         #plt.title('Scatter Plot of Errors')
         plt.xlabel('True Values')
         plt.ylabel('Predictions')
@@ -161,8 +164,8 @@ class DriveLog:
 
         plt.figure()
         # Plot a Side-By-Side Comparison
-        plt.plot(measurements)
-        plt.plot(predictions)
+        plt.plot(measurements, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
@@ -190,8 +193,8 @@ class DriveLog:
         plt.figure()
         # Plot a Side-By-Side Comparison
 
-        plt.plot(measurements)
-        plt.plot(predictions)
+        plt.plot(measurements, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
