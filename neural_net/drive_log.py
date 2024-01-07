@@ -10,6 +10,7 @@ History:
 @author: jaerock
 """
 
+import os
 import cv2
 import numpy as np
 #import keras
@@ -105,8 +106,8 @@ class DriveLog:
    ###########################################################################
     #
     def _savefigs(self, plt, filename):
-        plt.savefig(filename + '.png', dpi=150)
-        plt.savefig(filename + '.pdf', dpi=150)
+        plt.savefig(filename + '.png', dpi=300)
+        plt.savefig(filename + '.pdf', dpi=300)
         print('Saved ' + filename + '.png and pdf.')
 
 
@@ -166,8 +167,8 @@ class DriveLog:
 
         plt.figure()
         # Plot a Side-By-Side Comparison
-        plt.plot(measurements, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
-        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
+        plt.plot(measurements, linewidth=self.LINE_WIDTH)#, alpha=self.LINE_ALPHA)
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA, color='darkgreen')
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
@@ -194,8 +195,8 @@ class DriveLog:
         plt.figure()
         # Plot a Side-By-Side Comparison
 
-        plt.plot(measurements, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
-        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
+        plt.plot(measurements, linewidth=self.LINE_WIDTH)#, alpha=self.LINE_ALPHA)
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA, color='darkgreen')
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
@@ -203,7 +204,7 @@ class DriveLog:
         plt.ylabel('Steering Angle')
         plt.legend(['ground truth', 'prediction'], loc='upper right')
         plt.tight_layout()
-        self._savefigs(plt, self.filename_base + '_comparison_last1000')
+        self._savefigs(plt, self.filename_base + '_comparison_last_section')
 
         # show all figures
         #plt.show()
@@ -304,24 +305,26 @@ class DriveLog:
         #fname = self.data_path + const.LOG_EXT
         fname = self.filename_base + const.LOG_EXT # use model name to save log
         
-        file = open(fname, 'w')
+        # only if the log file doesn't exist
+        if not os.path.exists(fname):
+            file = open(fname, 'w')
 
-        #print('image_name', 'label', 'predict', 'abs_error')
-        #bar = ProgressBar()
-        bar = tqdm(self.test_data, desc="Processing", unit="file")
+            #print('image_name', 'label', 'predict', 'abs_error')
+            #bar = ProgressBar()
+            bar = tqdm(self.test_data, desc="Processing", unit="file")
 
-        #file.write('image_name,label_steering_angle,pred_steering_angle,abs_error,squared_error\n')
-        file.write('image_name,label_steering_angle,pred_steering_angle,abs_error\n')
+            #file.write('image_name,label_steering_angle,pred_steering_angle,abs_error,squared_error\n')
+            file.write('image_name,label_steering_angle,pred_steering_angle,abs_error\n')
 
-        if Config.neural_net['lstm'] is True:
-            self._lstm_run(file, bar)
-        else:
-            self._run(file, bar)
+            if Config.neural_net['lstm'] is True:
+                self._lstm_run(file, bar)
+            else:
+                self._run(file, bar)
 
-        bar.close()
-      
-        file.close()
-        print('Saved ' + fname + '.')
+            bar.close()
+        
+            file.close()
+            print('Saved ' + fname + '.')
 
         self._plot_prediction_errors(fname)
         self._plot_scatter(fname)
