@@ -33,9 +33,9 @@ import utilities
 class DriveLog:
     MAX_ROWS =  100000 # for large files. Not enough memory to process.
     SUBSET_COUNT = 5000
-    LINE_WIDTH = 0.75
-    LINE_ALPHA = 0.75
-    SCATTER_SIZE = 5
+    LINE_WIDTH = 0.5
+    LINE_ALPHA = 0.5
+    SCATTER_SIZE = 0.2
     
     ###########################################################################
     # model_path = 'path_to_pretrained_model_name' excluding '.h5' or 'json'
@@ -143,7 +143,7 @@ class DriveLog:
 
         plt.figure()
         # Plot a Scatter Plot of the Error
-        plt.scatter(measurements, predictions, s=self.SCATTER_SIZE)
+        plt.scatter(measurements, predictions, marker='+', s=self.SCATTER_SIZE)
         #plt.title('Scatter Plot of Errors')
         plt.xlabel('True Values')
         plt.ylabel('Predictions')
@@ -325,6 +325,8 @@ class DriveLog:
         
             file.close()
             print('Saved ' + fname + '.')
+        else:
+            print(f"The log file exists: {fname}")
 
         self._plot_prediction_errors(fname)
         self._plot_scatter(fname)
