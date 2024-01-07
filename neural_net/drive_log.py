@@ -33,8 +33,8 @@ import utilities
 class DriveLog:
     MAX_ROWS =  100000 # for large files. Not enough memory to process.
     SUBSET_COUNT = 5000
-    LINE_WIDTH = 0.5
-    LINE_ALPHA = 0.5
+    LINE_WIDTH = 0.75
+    LINE_ALPHA = 0.75
     SCATTER_SIZE = 5
     
     ###########################################################################
@@ -168,7 +168,7 @@ class DriveLog:
         plt.figure()
         # Plot a Side-By-Side Comparison
         plt.plot(measurements, linewidth=self.LINE_WIDTH)#, alpha=self.LINE_ALPHA)
-        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA, color='darkgreen')
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
@@ -196,7 +196,7 @@ class DriveLog:
         # Plot a Side-By-Side Comparison
 
         plt.plot(measurements, linewidth=self.LINE_WIDTH)#, alpha=self.LINE_ALPHA)
-        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA, color='darkgreen')
+        plt.plot(predictions, linewidth=self.LINE_WIDTH, alpha=self.LINE_ALPHA)
         plt.title('MAE: {0:.3f}, STDEV: {1:.3f}'.format(diff_mean, diff_std))
         #plt.title('Ground Truth vs. Prediction')
         plt.ylim([-1.0, 1.0])
