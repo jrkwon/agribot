@@ -31,7 +31,7 @@ import utilities
 ###############################################################################
 #
 class DriveLog:
-    MAX_FILES =  100000 # for large files. Not enough memory to process.
+    MAX_ROWS =  100000 # for large files. Not enough memory to process.
     SUBSET_COUNT = 5000
     LINE_WIDTH = 0.5
     LINE_ALPHA = 0.5
@@ -95,7 +95,7 @@ class DriveLog:
     #
     def _prepare_data(self):
         
-        self.data.read(normalize = False, nrows=self.MAX_FILES)
+        self.data.read(normalize = False, nrows=self.MAX_ROWS)
     
         self.test_data = list(zip(self.data.image_names, self.data.velocities, self.data.measurements))
         self.num_test_samples = len(self.test_data)
