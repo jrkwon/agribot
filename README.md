@@ -259,7 +259,7 @@ python neural_net/visualize_heatmap.py path/to/model path/to/image
     ```bash
     cd path/to/agribot
 
-    sh make_video.sh path/to/images/data-dir-name
+    sh make_video.sh path/to/target-dir/data-dir-name
     ```
     Caution: Do not include `'/'` at the last of the directory name.
 
