@@ -251,9 +251,9 @@ python neural_net/visualize_heatmap.py path/to/model path/to/image
     cd path/to/agribot
 
     source setup.bash
-    python neural_net/view_drive.py path/to/model path/to/images
+    python neural_net/view_drive.py path/to/model path/to/data-dir path/to/target-dir
     ```
-    The images will be generated under `path/to/images/data-dir-name`
+    The images will be generated under `path/to/target-dir/data-dir-name`
 
 - Generate mp4 using the generated images.
     ```bash
